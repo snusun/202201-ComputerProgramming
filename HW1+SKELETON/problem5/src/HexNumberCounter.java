@@ -1,16 +1,3 @@
-//class Element implements Comparable<Element>{
-//    char val;
-//    int cnt;
-//    Element(char val, int cnt){
-//        this.val = val;
-//        this.cnt = cnt;
-//    }
-//    @Override
-//    public int compareTo(Element e){
-//        return this.val - e.val;
-//    }
-//}
-
 public class HexNumberCounter {
     public static void countHexNumbers(int n) {
         // DO NOT change the skeleton code.

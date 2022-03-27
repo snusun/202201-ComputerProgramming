@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class FibonacciNumbers {
     static int[] fibo;
 

@@ -4,6 +4,8 @@ public class CardGameSimulator {
 	public static void simulateCardGame(String inputA, String inputB) {
 		// DO NOT change the skeleton code.
 		// You can add codes anywhere you want.
+		Player A = new Player("A", inputA);
+		Player B = new Player("B", inputB);
 	}
 
 	private static void printLoseMessage(Player player) {
@@ -23,6 +25,15 @@ class Player {
 	public String toString() {
 		return name;
 	}
+
+	Player(String name, String deck){
+		this.name = name;
+		String[] d = deck.split(" ");
+		this.deck = new Card[d.length];
+		for(int i=0; i<d.length; i++){
+			this.deck[i] = new Card(d[0].charAt(0), d[1].charAt(1));
+		}
+	}
 }
 
 class Card {
@@ -32,5 +43,10 @@ class Card {
 	@Override
 	public String toString() {
 		return "" + number + letter;
+	}
+
+	Card(char number, char letter){
+		this.number = number;
+		this.letter = letter;
 	}
 }
