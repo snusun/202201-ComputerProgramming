@@ -49,6 +49,15 @@ public class FractionalNumberCalculator {
                     System.out.println(multiply.getNumerator() + "/" + multiply.getDenominator());
                 }
                 break;
+            case "/":
+                FractionalNumber devideNum2 = new FractionalNumber(num2.getDenominator(), num2.getNumerator());
+                FractionalNumber devide = num1.multiply(devideNum2);
+                if(devide.getDenominator()==1){
+                    System.out.println(devide.getNumerator());
+                } else {
+                    System.out.println(devide.getNumerator() + "/" + devide.getDenominator());
+                }
+                break;
         }
     }
 }
