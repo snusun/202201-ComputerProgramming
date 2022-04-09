@@ -108,7 +108,7 @@ public class Encryptor {
             return "";
         }
     }
-    private static String sha256Hex(java.lang.String msg) {
+    private static String sha256Hex(String msg) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(msg.getBytes());
@@ -119,10 +119,10 @@ public class Encryptor {
         }
         return null;
     }
-    private static java.lang.String bytes2Hex(byte[] bytes){
+    private static String bytes2Hex(byte[] bytes){
         StringBuilder builder = new StringBuilder();
         for(byte b:bytes){
-            builder.append(java.lang.String.format("%02x",b));
+            builder.append(String.format("%02x",b));
         }
         return builder.toString();
     }

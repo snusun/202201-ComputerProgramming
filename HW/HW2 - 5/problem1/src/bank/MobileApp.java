@@ -26,22 +26,33 @@ public class MobileApp {
 
     public Encrypted<BankSymmetricKey> sendSymKey(BankPublicKey publickey){
         //TODO: Problem 1.2
+        bankSymmetricKey = new BankSymmetricKey(randomUniqueStringGen());
+        return new Encrypted<>(bankSymmetricKey, publickey);
     }
 
     public Encrypted<Message> deposit(int amount){
         //TODO: Problem 1.2
+        Message message = new Message("deposit", id, password, amount, curTransId++);
+        return new Encrypted<>(message, bankSymmetricKey);
     }
 
     public Encrypted<Message> withdraw(int amount){
         //TODO: Problem 1.2
+        Message message = new Message("withdraw", id, password, amount, curTransId++);
+        return new Encrypted<>(message, bankSymmetricKey);
     }
 
     public boolean processResponse(Encrypted<Boolean> obj) {
         //TODO: Problem 1.2
+        if(obj==null) return false;
+        if(obj.decrypt(bankSymmetricKey)==null) return false;
+        return obj.decrypt(bankSymmetricKey);
     }
 
     public Encrypted<Message> requestCompensate(String question, String answer, int[] transIdList){
         //TODO: Problem 1.3
+        Message message = new Message("compensate", id, password, question+","+answer, transIdList);
+        return new Encrypted<>(message, bankSymmetricKey);
     }
 }
 
