@@ -1,10 +1,14 @@
 package relay;
 
 import relay.map.Map;
-import relay.simulator.*;
-import relay.player.*;
-import relay.player.human.*;
-import relay.player.animal.*;
+import relay.player.Eyesight;
+import relay.player.Player;
+import relay.player.animal.Rabbit;
+import relay.player.animal.Turtle;
+import relay.player.human.Runner;
+import relay.player.human.Swimmer;
+import relay.simulator.Message;
+import relay.simulator.Simulator;
 
 import java.util.ArrayList;
 
@@ -15,6 +19,8 @@ public class Test {
         testSubproblemA();
         testSubproblemB();
         testSubproblemC();
+        testSubproblemD();
+        testSubproblemE();
     }
 
     static String printResultConvertor(String result){
@@ -80,6 +86,7 @@ public class Test {
         rabbit.setPosition(20);
         boolean rabbitThrowUp2 = rabbit.getThrowUp();
         System.out.println("Should be true / " + rabbitThrowUp2);
+
         System.out.println(printResultConvertor("2 : "+
                 "1st human player, runner / 2nd human player, swimmer".equals(runner+" / "+swimmer1) + " / "+
                 (2.0 == swimmer1.getVelocity() && (1.5== swimmer2.getVelocity())) +" / "+
@@ -126,6 +133,86 @@ public class Test {
         for(int i=0; i< answerLog.length;i++) {
             System.out.print(printResultConvertor(String.valueOf(simulator.raceLogForEval[i].equals(answerLog[i]))));
             if(i<answerLog.length-1) {
+                System.out.print(" / ");
+            }
+        }
+    }
+
+    static void testSubproblemD() {
+        System.out.println();
+        System.out.println("<Test of sub-problem (d)>");
+        Map map2 = new Map(6,10,17);
+        Player swimmer1 = new Swimmer(map2);
+        Player runner1 = new Runner(4, map2);
+        Player swimmer2 = new Swimmer(8, map2);
+        Player runner2 = new Runner(12.5, map2);
+        Player rabbit1 = new Rabbit(map2);
+        Player turtle1 = new Turtle(4, map2);
+        Player rabbit2 = new Rabbit(13, map2);
+        ArrayList<Player> hlist= new ArrayList<>();
+        hlist.add(swimmer1);
+        hlist.add(runner1);
+        hlist.add(swimmer2);
+        hlist.add(runner2);
+        ArrayList<Player> alist= new ArrayList<>();
+        alist.add(rabbit1);
+        alist.add(turtle1);
+        alist.add(rabbit2);
+        Simulator simulator = new Simulator(hlist,alist,map2);
+        simulator.simulate();
+        while(true){
+            if(simulator.getRaceFinish())
+                break;
+        }
+        String[] answerLog={"0: [READY] Human team : 1st human player, swimmer / Animal team : 1st animal player, rabbit are at 0",
+                "1: [RUNNING] Human team : 1st human player, swimmer is at 1.5 / Animal team : 1st animal player, rabbit is at 3.0",
+                "2: [RUNNING] Human team : 1st human player, swimmer is at 3.5 / Animal team : 2nd animal player, turtle is at 4.0",
+                "3: [RUNNING] Human team : 2nd human player, runner is at 4.0 / Animal team : 2nd animal player, turtle is at 5.0",
+                "4: [RUNNING] Human team : 2nd human player, runner is at 6.0 / Animal team : 2nd animal player, turtle is at 6.0",
+                "5: [RUNNING] Human team : 2nd human player, runner is at 7.0 / Animal team : 2nd animal player, turtle is at 8.5",
+                "6: [RUNNING] Human team : 3rd human player, swimmer is at 8.0 / Animal team : 2nd animal player, turtle is at 10.0",
+                "7: [RUNNING] Human team : 3rd human player, swimmer is at 10.0 / Animal team : 2nd animal player, turtle is at 11.0",
+                "8: [RUNNING] Human team : 3rd human player, swimmer is at 12.0 / Animal team : 2nd animal player, turtle is at 12.0",
+                "9: [RUNNING] Human team : 4th human player, runner is at 12.5 / Animal team : 3rd animal player, rabbit is at 13.0",
+                "10: [RUNNING] Human team : 4th human player, runner is at 14.5 / Animal team : 3rd animal player, rabbit is at 16.0",
+                "11: [FINISH] Both teams reach the goal at the same time"};
+        System.out.print("4 : ");
+        for(int i=0; i< answerLog.length;i++) {
+            System.out.print(printResultConvertor(String.valueOf(simulator.raceLogForEval[i].equals(answerLog[i]))));
+            if(i<answerLog.length-1) {
+                System.out.print(" / ");
+            }
+        }
+    }
+
+    static void testSubproblemE() {
+        System.out.println();
+        System.out.println("<Test of sub-problem (e)>");
+        Map map3 = new Map(3, 6, 6);
+        Player swimmer1 = new Swimmer(map3);
+        Player runner1 = new Runner(1, map3);
+        Player turtle1 = new Turtle(map3);
+        Player rabbit1 = new Rabbit(1, map3);
+        ArrayList<Player> humanPlayerList = new ArrayList<>();
+        humanPlayerList.add(swimmer1);
+        humanPlayerList.add(runner1);
+        ArrayList<Player> animalPlayerList = new ArrayList<>();
+        animalPlayerList.add(rabbit1);
+        animalPlayerList.add(turtle1);
+        Simulator simulator = new Simulator(humanPlayerList, animalPlayerList, map3);
+        simulator.simulate();
+        while (true) {
+            if (simulator.getRaceFinish())
+                break;
+        }
+        String[] answerLog = {"0: [READY] Human team : 1st human player, swimmer / Animal team : 1st animal player, turtle are at 0",
+                "1: [RUNNING] Human team : 2nd human player, runner is at 1.0 / Animal team : 2nd animal player, rabbit is at 1.0",
+                "2: [RUNNING] Human team : 2nd human player, runner is at 3.0 / Animal team : 2nd animal player, rabbit is at 3.0",
+                "3: [FINISH] Both teams throw up the race"};
+        System.out.print("5 : ");
+        for (int i = 0; i < answerLog.length; i++) {
+            System.out.print(printResultConvertor(String.valueOf(answerLog[i].equals(simulator.raceLogForEval[i]))));
+            if (i < answerLog.length - 1) {
                 System.out.print(" / ");
             }
         }

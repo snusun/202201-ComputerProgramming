@@ -1,7 +1,7 @@
 package relay.player.animal;
 
-import relay.player.Player;
 import relay.map.Map;
+import relay.player.Player;
 import relay.simulator.Message;
 
 public abstract class Animal extends Player {

@@ -11,8 +11,21 @@ public class Map {
         this.mapEnd = mapEnd;
     }
 
+    public double getWaterStart(){
+        return waterStart;
+    }
 
-    public boolean getOnWater(double position){
+    public double getWaterEnd(){
+        return waterEnd;
+    }
+
+    public double getMapEnd(){
+        return mapEnd;
+    }
+
+    public boolean getOnWater(double position) {
         //TODO: Problem 2.1
+        return position >= waterStart && position < waterEnd;
+    }
 }
 

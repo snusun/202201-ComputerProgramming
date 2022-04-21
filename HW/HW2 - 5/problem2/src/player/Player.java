@@ -25,6 +25,42 @@ public abstract class Player implements Comparable<Player>{
 		this.playerType = playerType;
     }
 
+    public double getPosition(){
+        return position;
+    }
+
+    public void setPosition(double position){
+        this.position = position;
+    }
+
+    public Eyesight getEyesight(){
+        return eyesight;
+    }
+
+    public Map getMap(){
+        return map;
+    }
+
+    public double getVelocity(){
+        return velocity;
+    }
+
+    public void setVelocity(double velocity){
+        this.velocity = velocity;
+    }
+
+    public boolean getCurrentPlayer(){
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(boolean isCurrent){
+        currentPlayer = isCurrent;
+    }
+
+    public double getNextPlayerPosition(){
+        return nextPlayerPosition;
+    }
+
     public void setNextPlayerPosition(double position) {
         nextPlayerPosition = position;
 		eyesight.setNextPlayerPosition(position);
@@ -44,10 +80,17 @@ public abstract class Player implements Comparable<Player>{
 
     public void passBaton(Player nextPlayer){
         //TODO: Problem 2.2
+        currentPlayer = false;
+        nextPlayer.currentPlayer = true;
     }
 
     protected double getMovableDistance(double velocity){
         //TODO: Problem 2.2
+        // do i understand correctly?
+        double distanceToBoundary = eyesight.getDistanceToBoundary(position);
+        double distanceToNextPlayer = eyesight.getDistanceToNextPlayer(position);
+        double dis = distanceToBoundary < distanceToNextPlayer ? distanceToBoundary : distanceToNextPlayer;
+        return dis<velocity ? dis : velocity;
     }
 
     @Override

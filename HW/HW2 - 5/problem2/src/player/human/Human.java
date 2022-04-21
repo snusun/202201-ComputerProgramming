@@ -1,7 +1,7 @@
 package relay.player.human;
 
-import relay.player.Player;
 import relay.map.Map;
+import relay.player.Player;
 
 public abstract class Human extends Player{
 
