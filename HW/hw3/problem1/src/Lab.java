@@ -11,7 +11,24 @@ public class Lab {
         this.labname = labname;
         assetInventory = new HashMap<>();
     }
+
+    public String getLabname() {
+        return labname;
+    }
+
     public int getBalance(){return balance;}
+
+    public void setBalance(int balance){
+        this.balance = balance;
+    }
+
+    public void addAsset(Asset asset){
+        assetInventory.put(asset.getId(), asset);
+    }
+
+    public void removeAsset(Asset asset){
+        assetInventory.remove(asset.getId());
+    }
 
     // TODO sub-problem 1-4
 

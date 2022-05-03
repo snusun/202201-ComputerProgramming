@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Asset {
+public class Asset implements Comparable<Asset> {
     private int id;
     private String item;
     private int price;
@@ -15,7 +15,47 @@ public class Asset {
         this.owners = new ArrayList<>();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
     public List<Lab> getOwners(){return owners;}
+
+    public void addOwner(Lab lab){
+        owners.add(lab);
+    }
+
+    public void removeOwner(Lab lab){
+        owners.remove(lab);
+    }
+
+    public boolean isOwned(Lab lab){
+        for(Lab a: owners){
+            if(a.equals(lab)) return true;
+        }
+        return false;
+    }
+
+    public String toString(){
+        return id + "";
+    }
+
+    @Override
+    public int compareTo(Asset o) {
+        return this.id - o.id;
+    }
     // TODO sub-problem 1-4
 
 
