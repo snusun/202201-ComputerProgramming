@@ -1,8 +1,7 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.zip.Adler32;
 
-class Post {
+class Post implements Comparable<Post>{
     private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     private int id;
@@ -76,5 +75,16 @@ class Post {
 
     static LocalDateTime parseDateTimeString(String dateString, DateTimeFormatter dateTimeFormatter) {
         return LocalDateTime.parse(dateString,dateTimeFormatter);
+    }
+
+    @Override
+    public int compareTo(Post o) {
+        if(this.advertising.equals(o.advertising)){
+            return o.dateTime.compareTo(this.dateTime);
+        } else {
+            if(this.advertising.equals("yes")){
+                return -1;
+            } else return 1;
+        }
     }
 }

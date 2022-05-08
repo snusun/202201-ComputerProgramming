@@ -1,34 +1,47 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FrontEnd {
     private UserInterface ui;
     private BackEnd backend;
     private User user;
+    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     public FrontEnd(UserInterface ui, BackEnd backend) {
         this.ui = ui;
         this.backend = backend;
     }
-    
-    public boolean auth(String authInfo){
+
+    public boolean auth(String authInfo) {
         // TODO sub-problem 1
-         return false;
+        String[] info = authInfo.split("\n");
+        if (backend.authentication(info[0], info[1])) {
+            user = new User(info[0], info[1]);
+            return true;
+        } else return false;
     }
 
     public void post(List titleContentList) {
         // TODO sub-problem 2
+        LocalDateTime dateTime = LocalDateTime.now();
+        Post post = new Post(0, dateTime, titleContentList.get(1).toString(),
+                titleContentList.get(0).toString(), titleContentList.get(2).toString());
+        backend.post(user.id, post);
     }
-    
-    public void recommend(int N){
+
+    public void recommend(int N) {
         // TODO sub-problem 3
+        LinkedList<Post> posts = backend.recommend(user.id);
+        // 길이 생각ㄱ 하고 프린트 하기!
     }
 
     public void search(String command) {
 
     }
-    
-    User getUser(){
+
+    User getUser() {
         return user;
     }
 }
