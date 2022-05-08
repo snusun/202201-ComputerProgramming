@@ -34,7 +34,18 @@ public class FrontEnd {
     public void recommend(int N) {
         // TODO sub-problem 3
         LinkedList<Post> posts = backend.recommend(user.id);
-        // 길이 생각ㄱ 하고 프린트 하기!
+        //System.out.println(posts.size());
+        UserInterface userInterface = new UserInterface();
+
+        if(posts.size()<N){
+            for(Post post: posts){
+                ui.println(post);
+            }
+        } else {
+            for(int i=0; i<N; i++){
+                ui.println(posts.get(i));
+            }
+        }
     }
 
     public void search(String command) {
