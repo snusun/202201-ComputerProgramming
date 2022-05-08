@@ -1,5 +1,4 @@
 import java.io.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -88,10 +87,10 @@ public class BackEnd extends ServerResourceAccessible {
                 String[] files = file.list();
 
                 for(String eachFile: files) {
-                    String passwordPath = postPath + "/" + eachFile;
+                    String filePath = postPath + "/" + eachFile;
                     //String password = "";
                     try {
-                        File doc = new File(passwordPath);
+                        File doc = new File(filePath);
                         BufferedReader obj = new BufferedReader(new FileReader(doc));
 
                         String fileIDstr = eachFile.replace(".txt", "");
@@ -123,11 +122,102 @@ public class BackEnd extends ServerResourceAccessible {
 
         Collections.sort(posts);
 
-//        for(Post p: posts){
-//            System.out.println(p.toString());
-//        }
+        return posts;
+    }
+
+    public LinkedList<Occurrence> search(String command){
+        LinkedList<Occurrence> posts = new LinkedList<>();
+
+        String postPath = serverStorageDir;
+        File dirPath = new File(postPath);
+        File[] dirList = dirPath.listFiles();
+
+        for(File dir: dirList){
+            if(dir.isDirectory()){
+                String path = dir.getPath() + "/post";
+                File file = new File(path);
+
+                if (file.isDirectory()) {
+                    String[] files = file.list();
+
+
+                    for(String eachFile: files) {
+                        String filePath = path + "/" + eachFile;
+                        //String password = "";
+                        try {
+                            File doc = new File(filePath);
+                            BufferedReader obj = new BufferedReader(new FileReader(doc));
+
+                            String fileIDstr = eachFile.replace(".txt", "");
+                            int fileID = Integer.parseInt(fileIDstr);
+
+                            String date="";
+                            String title="";
+                            String advertising="";
+                            String content="";
+                            String line;
+
+                            int cnt=0;
+                            while ((line = obj.readLine()) != null){
+                                if(cnt==0) date = line;
+                                else if(cnt==1) title = line;
+                                else if(cnt==2) advertising = line;
+                                else if(cnt>3) content+=line + " "; // + "\n";
+                                cnt++;
+                            }
+
+                            int occur = countOccurrence(command, title, content);
+                            //System.out.println("occur: " + occur);
+
+                            if(occur>0){
+                                //System.out.println("fileID" + fileID);
+                                Post post = new Post(fileID, Post.parseDateTimeString(date, formatter),
+                                        advertising, title, content);
+                                posts.add(new Occurrence(post, occur));
+                                //posts.add(post);
+                                // occur 확인하고 add 하기
+                            }
+
+                        } catch (Exception ignored) { }
+                    }
+                }
+
+            }
+        }
+
+        Collections.sort(posts);
 
         return posts;
+    }
+
+    public int countOccurrence(String cmd, String title, String content){ // 중복 거르기
+        int occur=0;
+        LinkedList<Integer> dupIdx = new LinkedList<>();
+        String[] keywords = cmd.split(" ");
+        String[] titleWords = title.split(" ");
+        String[] contentWords = content.split(" ");
+
+        for(int i=0; i<keywords.length-1; i++){
+            for(int j=i+1; j<keywords.length; j++){
+                if(keywords[i].equals(keywords[j])){
+                    dupIdx.add(j);
+                }
+            }
+        }
+
+        for(int i=1; i<keywords.length; i++){
+            String keyword = keywords[i];
+            if(dupIdx.contains(i)) continue;
+            for(String t: titleWords){
+                if(keyword.equals(t)) occur++;
+            }
+            for(String c: contentWords){
+                //System.out.println(c);
+                if(keyword.equals(c)) occur++;
+            }
+        }
+
+        return occur;
     }
 
 

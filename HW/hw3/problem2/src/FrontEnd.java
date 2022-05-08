@@ -34,22 +34,30 @@ public class FrontEnd {
     public void recommend(int N) {
         // TODO sub-problem 3
         LinkedList<Post> posts = backend.recommend(user.id);
-        //System.out.println(posts.size());
-        UserInterface userInterface = new UserInterface();
 
-        if(posts.size()<N){
-            for(Post post: posts){
+        if (posts.size() < N) {
+            for (Post post : posts) {
                 ui.println(post);
             }
         } else {
-            for(int i=0; i<N; i++){
+            for (int i = 0; i < N; i++) {
                 ui.println(posts.get(i));
             }
         }
     }
 
     public void search(String command) {
-
+        LinkedList<Occurrence> posts = backend.search(command);
+        //System.out.println("개수: " + posts.size());
+        if(posts.size()<10){
+            for (Occurrence o : posts) {
+                ui.println(o.post.getSummary());
+            }
+        } else {
+            for (int i = 0; i < 10; i++) {
+                ui.println(posts.get(i).post.getSummary());
+            }
+        }
     }
 
     User getUser() {
