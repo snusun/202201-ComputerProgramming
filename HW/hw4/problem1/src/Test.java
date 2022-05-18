@@ -16,6 +16,8 @@ public class Test {
         testSubProblem1();
         System.out.println("\n<Test Sub-problem 2>");
         testSubProblem2();
+        System.out.println("\n<Test Sub-problem 3>");
+        testSubProblem3();
     }
 
     static void testSubProblem1() {
@@ -77,6 +79,34 @@ public class Test {
                         "2020-20001", Map.of("lec1", 1.0, "lec2", 1.0),
                         "2022-30002", Map.of("lec1", 0.5, "lec2", 1.0),
                         "2022-12345", Map.of("lec1", 0.0, "lec2", 1.0));
+
+        testAndPrintResult(result, expectedResult);
+    }
+
+    static void testSubProblem3() {
+        String attendanceDirPath = "data/attendance-robust-backup2";
+        //  resetData(attendanceDirPath);
+
+
+        Student s4 = new Student("2022-12345", "Hyunseung Lee");
+        List<Student> students = new ArrayList<>(); students.add(s4);
+        Lecture l1 = new Lecture(
+                "lec1", "17/04/2022 12:00:00", "17/04/2022 14:00:00"
+        );
+        Lecture l2 = new Lecture(
+                "lec2", "19/04/2022 10:00:00", "19/04/2022 12:00:00"
+        );
+        List<Lecture> lectures = new ArrayList<>(); lectures.add(l1); lectures.add(l2);
+
+        AttendanceList attendanceList = new AttendanceList(students, lectures);
+
+        Grader grader = new Grader();
+        Map<String,Map<String,Double>> result = grader.gradeRobust(attendanceList, attendanceDirPath);
+
+        Map<String,Map<String,Double>> expectedResult = new HashMap<>();
+
+        expectedResult = Map.of(
+                "2022-12345", Map.of("lec1", 0.5, "lec2", 1.0));
 
         testAndPrintResult(result, expectedResult);
     }

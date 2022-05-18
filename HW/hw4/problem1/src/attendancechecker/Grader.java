@@ -41,7 +41,7 @@ public class Grader {
         for (Student student : students) {
             Map<String, Double> studentAttendance = new HashMap<>();
 
-            for (Lecture lecture : lectures) { // 리스트에 저장된 순서대로 넣으면 되는지?
+            for (Lecture lecture : lectures) {
                 String logPath = attendanceDirPath + "/" + student.id + "/" + lecture.id + "/" + "log0.txt";
                 File logFile = new File(logPath);
                 long time = 0;
@@ -85,56 +85,84 @@ public class Grader {
         for (Student student : students) {
             Map<String, Double> studentAttendance = new HashMap<>();
 
-            for (Lecture lecture : lectures) { // 리스트에 저장된 순서대로 넣으면 되는지?
+            for (Lecture lecture : lectures) {
                 String dirPath = attendanceDirPath + "/" + student.id + "/" + lecture.id;
                 File dir = new File(dirPath);
                 File[] files = dir.listFiles();
-                long time = 0;
 
-                List<Pair> logs = new LinkedList<>();
+                List<String> logList = new LinkedList<>();
+                List<Pair<String, String>> logs = new LinkedList<>();
+                double atten = 0.0;
 
-                // excused absence 확인
-                // file 별로 log pair 만들어서 넣기 <- early entrance 처리 (시간 반전되면 LogsToMinutes 음수나옴)
-                // 모든 file에 대해 pair 다 넣었으면 정렬 후 시간 계산
+                boolean excused = false;
 
                 assert files != null;
                 for (File file : files) {
-                    List<String> logList = new LinkedList<>();
-
                     try {
                         Scanner input = new Scanner(file);
                         while (input.hasNext()) {
-                            logList.add(input.nextLine()); // 여기서 excused absence 확인
+                            String line = input.nextLine();
+                            if (line.equals("Refused") || line.equals("Admitted")) {  //excused absence
+                                excused = true;
+                                if (line.equals("Refused")) {
+                                    atten = 0.0;
+                                } else atten = 1.0;
+                                break;
+                            }
+                            logList.add(line);
                         }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
+                    if (excused) break;
 
-                    // log pair에 추가
+                    // add log to log pair list
+                    for (int i = 0; i < logList.size() / 4; i++) {
+                        String startTime = logList.get(4 * i + 1);
+                        String endTime = logList.get(4 * i + 3);
+                        if(endTime.compareTo(lecture.lectureStart)<0) {
+                            continue;
+                        }
+                        if(logsToMinutes(startTime, lecture.lectureStart)>0){ // early entrance
+                            startTime = lecture.lectureStart;
+                        }
+                        if(endTime.compareTo(startTime)<=0) {
+                            continue;
+                        }
+                        logs.add(new Pair(startTime, logList.get(4 * i + 3)));
+                    }
                 }
 
+                Collections.sort(logs);
 
-//                List<String> logList = new LinkedList<>();
-//
-//                try {
-//                    Scanner input = new Scanner(logFile);
-//                    while (input.hasNext()) {
-//                        logList.add(input.nextLine()); // 여기서 excused absence 확인
-//                    }
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                for(int i=0; i<logList.size()/4; i++){
-//                    time += logsToMinutes(logList.get(4*i+1), logList.get(4*i+3));
-//                }
+                if (!excused) {
+                    long time = 0;
+                    time += logsToMinutes(logs.get(0).first, logs.get(0).second);
+                    String maxEnd = logs.get(0).second;
+                    for(int i=1; i<logs.size(); i++){
+                        Pair<String, String> prev = logs.get(i-1);
+                        if(prev.second.compareTo(maxEnd)>0) {
+                            maxEnd = prev.second;
+                        }
+                        Pair<String, String> now = logs.get(i);
 
-                long lectureTime = logsToMinutes(lecture.lectureStart, lecture.lectureEnd);
-                double atten = 0.0;
-                if (lectureTime * 0.1 <= time && lectureTime * 0.7 > time) {
-                    atten = 0.5;
-                } else if (lectureTime * 0.7 <= time) {
-                    atten = 1.0;
+                        if(now.first.compareTo(maxEnd)<0) {
+                            if(now.second.compareTo(maxEnd)>0) {
+                                time += logsToMinutes(now.first, now.second);
+                                time -= logsToMinutes(now.first, maxEnd);
+                            }
+                        } else {
+                            time+=logsToMinutes(now.first, now.second);
+                        }
+                    }
+
+                    long lectureTime = logsToMinutes(lecture.lectureStart, lecture.lectureEnd);
+
+                    if (lectureTime * 0.1 <= time && lectureTime * 0.7 > time) {
+                        atten = 0.5;
+                    } else if (lectureTime * 0.7 <= time) {
+                        atten = 1.0;
+                    }
                 }
                 studentAttendance.put(lecture.id, atten);
             }
