@@ -30,12 +30,12 @@ public class Server {
 
     public Server(String currentTime, String data_folder) {
         this.DATA_FOLDER = data_folder;
-		this.matchList = getMatchList();
+        this.matchList = getMatchList();
         this.userList = getUserList();
         this.currentTime = currentTime;
     }
 
-    public void setCurrentTime(String currentTime){
+    public void setCurrentTime(String currentTime) {
         this.currentTime = currentTime;
     }
 
@@ -48,10 +48,10 @@ public class Server {
             // No such directory or IO exception
             return new TreeMap<Integer, Match>();
         }
-        for (File sportsDirFile: sportsDirFiles) {
+        for (File sportsDirFile : sportsDirFiles) {
             String sportsType = sportsDirFile.getName();
             if (sportsDirFile.isDirectory()) {
-                for (File matchDir: sportsDirFile.listFiles()) {
+                for (File matchDir : sportsDirFile.listFiles()) {
                     if (matchDir.isDirectory()) {
                         for (File matchFile : matchDir.listFiles()) {
 
@@ -79,7 +79,7 @@ public class Server {
                                                 infos[3], // match time
                                                 infos[2], // location
                                                 numBets, // the number of possible betting sides
-												currentOdds
+                                                currentOdds
                                         )
                                 );
                             }
@@ -93,8 +93,8 @@ public class Server {
 
     public Map<String, User> getUserList() {
         // Save match info
-        if (userList == null){
-            userList= new TreeMap();
+        if (userList == null) {
+            userList = new TreeMap();
         }
         File userRootDirFile = new File(String.format("%s/Users", DATA_FOLDER));
         File[] userRootDirFiles = userRootDirFile.listFiles();
@@ -102,7 +102,7 @@ public class Server {
             // No such directory or IO exception
             return null;
         }
-        for (File userDirFile: userRootDirFiles) {
+        for (File userDirFile : userRootDirFiles) {
             String userId = userDirFile.getName();
             if (userList.get(userId) == null) {
                 userList.put(userId, new User(userId, DATA_FOLDER));
@@ -116,61 +116,175 @@ public class Server {
         return matchList.get(matchId);
     }
 
-    private User searchUser(String userId){
+    private User searchUser(String userId) {
         return userList.get(userId);
     }
 
-    private long compareTimes(String time1, String time2){
+    private long compareTimes(String time1, String time2) {
         try {
             long time1ToLong = formatter.parse(time1).getTime();
             long time2ToLong = formatter.parse(time2).getTime();
 
             return Long.compare(time1ToLong, time2ToLong);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return 0;
     }
 
-    public List<Match> search(Map<String,Object> searchConditions, String sortCriteria){
+    public List<Match> search(Map<String, Object> searchConditions, String sortCriteria) {
         // TODO Problem 2-1
         List<Match> searchResult = new LinkedList<>();
-
-//        Collections.sort(matchList.values(), ((Comparator<Match>)(m1, m2) -> {
-//            return m2.matchId - m1.matchId;
-//        }).thenComparing());
-
         List<Match> matches = new LinkedList<>(matchList.values());
 
-        matches.sort(new Comparator<Match>() {
-            @Override
-            public int compare(Match o1, Match o2) {
-                return o2.matchId - o1.matchId;
-            }
-        });
+        // search by search condition
+        for (Match match : matches) {
+            boolean proper = true;
+            for (String key : searchConditions.keySet()) {
+                Object value = searchConditions.get(key);
+                switch (key) { // 하나라도 틀리면 profer = false
+                    case "sports":
+                        if (!match.sportsType.equals(value.toString())) {
+                            proper = false;
+                        }
+                        break;
+                    case "time":
+                        if (compareTimes(value.toString(), match.matchTime) > -1) {
+                            proper = false;
+                        }
+                        break;
+                    case "club":
+                        String[] keywords = value.toString().split(" ");
+                        String[] homeTeam = match.homeTeam.split(" ");
+                        String[] awayTeam = match.awayTeam.split(" ");
+                        boolean homeSame = false;
+                        boolean awaySame = false;
+                        for (String home : homeTeam) {
+                            homeSame = false;
+                            for (String keyword : keywords) {
+                                if (home.equals(keyword)) {
+                                    homeSame = true;
+                                    break;
+                                }
+                            }
+                            if (!homeSame) break;
+                        }
 
-        for(Match match : matches){
-            System.out.println(match);
+                        for (String away : awayTeam) {
+                            awaySame = false;
+                            for (String keyword : keywords) {
+                                if (away.equals(keyword)) {
+                                    awaySame = true;
+                                    break;
+                                }
+                            }
+                            if (!awaySame) break;
+                        }
+
+                        if (!homeSame && !awaySame) proper = false;
+                        break;
+                    case "odds":
+                        boolean larger = false;
+                        for (double odd : match.currentOdds) {
+                            if (odd > Double.parseDouble(value.toString())) {
+                                larger = true;
+                                break;
+                            }
+                        }
+                        if (!larger) {
+                            proper = false;
+                        }
+                        break;
+                }
+            }
+            if (proper) searchResult.add(match);
+        }
+
+        // sort by sortCriteria
+        if (sortCriteria != null) {
+            switch (sortCriteria) {
+                case "sports":
+                    searchResult.sort(new Comparator<Match>() {
+                        @Override
+                        public int compare(Match o1, Match o2) {
+                            if (o1.sportsType.equals(o2.sportsType)) {
+                                return o1.matchId - o2.matchId;
+                            } else {
+                                return o1.sportsType.compareTo(o2.sportsType);
+                            }
+                        }
+                    });
+                    break;
+                case "club":
+                    searchResult.sort(new Comparator<Match>() {
+                        @Override
+                        public int compare(Match o1, Match o2) {
+                            if (!o1.homeTeam.equals(o2.homeTeam)) {
+                                return o1.homeTeam.compareTo(o2.homeTeam);
+                            } else if (!o1.awayTeam.equals(o2.awayTeam)) {
+                                return o1.awayTeam.compareTo(o2.awayTeam);
+                            } else {
+                                return o1.matchId - o2.matchId;
+                            }
+                        }
+                    });
+                    break;
+                case "time":
+                    searchResult.sort(new Comparator<Match>() {
+                        @Override
+                        public int compare(Match o1, Match o2) {
+                            if (compareTimes(o1.matchTime, o2.matchTime) == 0) {
+                                return o1.matchId - o2.matchId;
+                            } else {
+                                return (int) compareTimes(o1.matchTime, o2.matchTime);
+                            }
+                        }
+                    });
+                    break;
+                case "odds":
+                    searchResult.sort(new Comparator<Match>() {
+                        @Override
+                        public int compare(Match o1, Match o2) {
+                            double largestO1 = 0;
+                            double largestO2 = 0;
+                            for (double odd : o1.currentOdds) {
+                                if (odd > largestO1) largestO1 = odd;
+                            }
+                            for (double odd : o2.currentOdds) {
+                                if (odd > largestO2) largestO2 = odd;
+                            }
+                            return Double.compare(largestO1, largestO2);
+                        }
+                    });
+                    break;
+                default:
+                    searchResult.sort(new Comparator<Match>() {
+                        @Override
+                        public int compare(Match o1, Match o2) {
+                            return o1.matchId - o2.matchId;
+                        }
+                    });
+            }
         }
 
         return searchResult;
     }
 
-    public int collectBettings(){
+    public int collectBettings() {
         // TODO Problem 2-2
 
         return ErrorCode.SUCCESS;
     }
 
-    public List<Betting> getBettingBook(int matchId){
+    public List<Betting> getBettingBook(int matchId) {
         // TODO Problem 2-2
         List<Betting> bettingBook = new LinkedList<>();
 
         return bettingBook;
     }
 
-    public boolean settleMatch(int matchId, int winNumber){
+    public boolean settleMatch(int matchId, int winNumber) {
         // TODO Problem 2-3
 
         return true;
