@@ -120,13 +120,13 @@ public class Grader {
                     for (int i = 0; i < logList.size() / 4; i++) {
                         String startTime = logList.get(4 * i + 1);
                         String endTime = logList.get(4 * i + 3);
-                        if(endTime.compareTo(lecture.lectureStart)<0) {
+                        if (endTime.compareTo(lecture.lectureStart) < 0) {
                             continue;
                         }
-                        if(logsToMinutes(startTime, lecture.lectureStart)>0){ // early entrance
+                        if (logsToMinutes(startTime, lecture.lectureStart) > 0) { // early entrance
                             startTime = lecture.lectureStart;
                         }
-                        if(endTime.compareTo(startTime)<=0) {
+                        if (endTime.compareTo(startTime) <= 0) {
                             continue;
                         }
                         logs.add(new Pair(startTime, logList.get(4 * i + 3)));
@@ -139,20 +139,20 @@ public class Grader {
                     long time = 0;
                     time += logsToMinutes(logs.get(0).first, logs.get(0).second);
                     String maxEnd = logs.get(0).second;
-                    for(int i=1; i<logs.size(); i++){
-                        Pair<String, String> prev = logs.get(i-1);
-                        if(prev.second.compareTo(maxEnd)>0) {
+                    for (int i = 1; i < logs.size(); i++) {
+                        Pair<String, String> prev = logs.get(i - 1);
+                        if (prev.second.compareTo(maxEnd) > 0) {
                             maxEnd = prev.second;
                         }
                         Pair<String, String> now = logs.get(i);
 
-                        if(now.first.compareTo(maxEnd)<0) {
-                            if(now.second.compareTo(maxEnd)>0) {
+                        if (now.first.compareTo(maxEnd) < 0) {
+                            if (now.second.compareTo(maxEnd) > 0) {
                                 time += logsToMinutes(now.first, now.second);
                                 time -= logsToMinutes(now.first, maxEnd);
                             }
                         } else {
-                            time+=logsToMinutes(now.first, now.second);
+                            time += logsToMinutes(now.first, now.second);
                         }
                     }
 

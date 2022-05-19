@@ -135,6 +135,24 @@ public class Server {
 
     public List<Match> search(Map<String,Object> searchConditions, String sortCriteria){
         // TODO Problem 2-1
+        List<Match> searchResult = new LinkedList<>();
+
+//        Collections.sort(matchList.values(), ((Comparator<Match>)(m1, m2) -> {
+//            return m2.matchId - m1.matchId;
+//        }).thenComparing());
+
+        List<Match> matches = new LinkedList<>(matchList.values());
+
+        matches.sort(new Comparator<Match>() {
+            @Override
+            public int compare(Match o1, Match o2) {
+                return o2.matchId - o1.matchId;
+            }
+        });
+
+        for(Match match : matches){
+            System.out.println(match);
+        }
 
         return searchResult;
     }
@@ -147,6 +165,7 @@ public class Server {
 
     public List<Betting> getBettingBook(int matchId){
         // TODO Problem 2-2
+        List<Betting> bettingBook = new LinkedList<>();
 
         return bettingBook;
     }
