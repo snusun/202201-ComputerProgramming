@@ -41,6 +41,15 @@ public class User {
 
     public int bet(int matchId, int bettingOption, int coin){
         // TODO Problem 2-2
+        if(coin<=0) return ErrorCode.NEGATIVE_BETTING;
+        //if() 한 매치에 15000을 넘으면 안됨 ErrorCode.OVER_MAX_BETTING; Betting Book + New Bettings를 모두 고려해야합니다.
+        if(getTotalCoin() < coin) return ErrorCode.NOT_ENOUGH_COINS;
+
+        // IO ERROR
+
+        // betting 처리
+        // betting 하면 total coin 뺍니까..?
+
 
         return ErrorCode.SUCCESS;
     }

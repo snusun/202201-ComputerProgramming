@@ -9,6 +9,7 @@ import utils.ErrorCode;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -280,6 +281,22 @@ public class Server {
     public List<Betting> getBettingBook(int matchId) {
         // TODO Problem 2-2
         List<Betting> bettingBook = new LinkedList<>();
+        Match match = searchMatch(matchId);
+        String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + matchId + "/" + matchId + "_bettingBook.txt";
+
+        String matchInfo = null;
+        try {
+            matchInfo = Files.readString(Path.of(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assert matchInfo != null;
+        String[] bettingInfo = matchInfo.split("\\|");
+        for(int i=0; i<bettingInfo.length/3; i+=3){
+            Betting betting = new Betting(bettingInfo[i], matchId, Integer.parseInt(bettingInfo[i+1]), Integer.parseInt(bettingInfo[i+2]));
+            bettingBook.add(betting);
+        }
 
         return bettingBook;
     }
