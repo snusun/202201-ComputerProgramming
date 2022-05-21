@@ -18,7 +18,7 @@ public class User {
 
     public String DATA_FOLDER;
 
-    public Map<Pair<Integer, Integer>, Integer> bettingIdMap;
+    public Map<Pair<Integer, Integer>, Integer> bettingIdMap; // matchId, bettingOption, bettingId
 
     public Map<Integer, Integer> matchCoinMap; // matchId, coin // 차후 server에서 변경이 필요할 수 있음
 

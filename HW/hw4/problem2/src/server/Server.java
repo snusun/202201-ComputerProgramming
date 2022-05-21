@@ -275,6 +275,28 @@ public class Server {
     public int collectBettings() {
         // TODO Problem 2-2
 
+        // userList
+        // matchId return ErrorCode.MATCH_NOT_FOUND;
+
+        // late betting return ErrorCode.LATE_BETTING;
+
+        // bettingOption return ErrorCode.INVALID_BETTING;
+
+
+        // user들 ascending order로 순회
+
+        // newBettings.txt process
+            // valid
+                // 같은 유저 같은 옵션에 대한 betting은 하나로 합치기 (-1인 경우만)
+                // bettingBook update
+                // bettingIdMap에서 bettingId update <- match마다 1부터 시작
+                // info update <- current odd & total betting update
+            // not valid
+                // bettingIdMap updated with the error code
+                // coin refund
+
+        // newBettings.txt 삭제
+
         return ErrorCode.SUCCESS;
     }
 
