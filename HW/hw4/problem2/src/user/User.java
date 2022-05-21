@@ -34,6 +34,11 @@ public class User {
         return this.bettingIdMap;
     }
 
+    public void updateBettingIdMap(int matchId, int bettingOption, int bettingId){
+        Pair<Integer, Integer> betInfo = new Pair<>(matchId, bettingOption);
+        bettingIdMap.put(betInfo, bettingId);
+    }
+
     public int getTotalCoin(){
         return totalCoin;
     }

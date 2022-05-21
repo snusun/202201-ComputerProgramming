@@ -6,6 +6,7 @@ import match.Betting;
 import match.Match;
 
 import utils.ErrorCode;
+import utils.Pair;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -291,28 +292,37 @@ public class Server {
         for (String userId : userList) {
             String filePath = DATA_FOLDER + "Users/" + userId + "/newBettings.txt";
             File file = new File(filePath);
+            User user = searchUser(userId);
             try {
 
                 BufferedReader inFile = new BufferedReader(new FileReader(file));
                 String sLine = null;
                 while ((sLine = inFile.readLine()) != null) {
                     String[] info = sLine.split("\\|");
+                    int matchId = Integer.parseInt(info[0]);
+                    int bettingOption = Integer.parseInt(info[1]);
+                    int coinsBet = Integer.parseInt(info[2]);
 
-                    // matchId return ErrorCode.MATCH_NOT_FOUND;
-                    // bettingOption return ErrorCode.INVALID_BETTING;
-                    // late betting return ErrorCode.LATE_BETTING; // refund
+                    // not valid
+                        // bettingIdMap updated with the error code
+                        // coin refund
+                    Match match = searchMatch(matchId);
 
-                    // newBettings.txt process
-                        // valid
-                            // 같은 유저 같은 옵션에 대한 betting은 하나로 합치기 (-1인 경우만)
-                            // bettingBook update
-                            // bettingIdMap에서 bettingId update <- match마다 1부터 시작
-                            // info update <- current odd & total betting update
-                        // not valid
-                            // bettingIdMap updated with the error code
-                            // coin refund
+                    if(match==null){ // MATCH_NOT_FOUND
+                        user.updateBettingIdMap(matchId, bettingOption, ErrorCode.MATCH_NOT_FOUND);
+                    } else if(match.numBets<=bettingOption){ // INVALID_BETTING
+                        user.updateBettingIdMap(matchId, bettingOption, ErrorCode.INVALID_BETTING);
+                    } else if(compareTimes(currentTime, match.matchTime)>-1){ // LATE_BETTING
+                        user.updateBettingIdMap(matchId, bettingOption, ErrorCode.LATE_BETTING);
+                    } else { // valid
+                        // 같은 유저 같은 옵션에 대한 betting은 하나로 합치기 (-1인 경우만)
+                        // bettingBook update
+                        // bettingIdMap에서 bettingId update <- match마다 1부터 시작
+                        // info update <- current odd & total betting update
 
-                    System.out.println(sLine); //읽어들인 문자열을 출력 합니다.
+                    }
+
+                    // refund (error code 인 것들에 대해)
                 }
 
             } catch (IOException e) {
