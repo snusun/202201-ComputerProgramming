@@ -276,26 +276,54 @@ public class Server {
         // TODO Problem 2-2
 
         // userList
-        // matchId return ErrorCode.MATCH_NOT_FOUND;
+        List<String> userList = new LinkedList<>(getUserList().keySet());
+        Map<Integer, List<BettingInfo>> bettingInfo = new TreeMap<>(); // matchId, BettingInfo
 
-        // late betting return ErrorCode.LATE_BETTING;
+        // ascending order
+        userList.sort(new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s1.compareTo(s2);
+            }
+        });
 
-        // bettingOption return ErrorCode.INVALID_BETTING;
+        // traverse
+        for (String userId : userList) {
+            String filePath = DATA_FOLDER + "Users/" + userId + "/newBettings.txt";
+            File file = new File(filePath);
+            try {
 
+                BufferedReader inFile = new BufferedReader(new FileReader(file));
+                String sLine = null;
+                while ((sLine = inFile.readLine()) != null) {
+                    String[] info = sLine.split("\\|");
 
-        // user들 ascending order로 순회
+                    // matchId return ErrorCode.MATCH_NOT_FOUND;
+                    // bettingOption return ErrorCode.INVALID_BETTING;
+                    // late betting return ErrorCode.LATE_BETTING; // refund
 
-        // newBettings.txt process
-            // valid
-                // 같은 유저 같은 옵션에 대한 betting은 하나로 합치기 (-1인 경우만)
-                // bettingBook update
-                // bettingIdMap에서 bettingId update <- match마다 1부터 시작
-                // info update <- current odd & total betting update
-            // not valid
-                // bettingIdMap updated with the error code
-                // coin refund
+                    // newBettings.txt process
+                        // valid
+                            // 같은 유저 같은 옵션에 대한 betting은 하나로 합치기 (-1인 경우만)
+                            // bettingBook update
+                            // bettingIdMap에서 bettingId update <- match마다 1부터 시작
+                            // info update <- current odd & total betting update
+                        // not valid
+                            // bettingIdMap updated with the error code
+                            // coin refund
 
-        // newBettings.txt 삭제
+                    System.out.println(sLine); //읽어들인 문자열을 출력 합니다.
+                }
+
+            } catch (IOException e) {
+                return ErrorCode.IO_ERROR;
+            }
+
+            // newBettings.txt 삭제
+        }
+
+        // betting info
+        // TODO update betting book
 
         return ErrorCode.SUCCESS;
     }
@@ -315,8 +343,8 @@ public class Server {
 
         assert matchInfo != null;
         String[] bettingInfo = matchInfo.split("\\|");
-        for(int i=0; i<bettingInfo.length/3; i+=3){
-            Betting betting = new Betting(bettingInfo[i], matchId, Integer.parseInt(bettingInfo[i+1]), Integer.parseInt(bettingInfo[i+2]));
+        for (int i = 0; i < bettingInfo.length / 3; i += 3) {
+            Betting betting = new Betting(bettingInfo[i], matchId, Integer.parseInt(bettingInfo[i + 1]), Integer.parseInt(bettingInfo[i + 2]));
             bettingBook.add(betting);
         }
 
@@ -327,5 +355,17 @@ public class Server {
         // TODO Problem 2-3
 
         return true;
+    }
+
+    static class BettingInfo {
+        String userId;
+        int bettingOption;
+        int coin;
+
+        public BettingInfo(String userId, int bettingOption, int coin) {
+            this.userId = userId;
+            this.bettingOption = bettingOption;
+            this.coin = coin;
+        }
     }
 }
