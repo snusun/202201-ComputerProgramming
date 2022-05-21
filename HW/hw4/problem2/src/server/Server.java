@@ -278,7 +278,7 @@ public class Server {
 
         // userList
         List<String> userList = new LinkedList<>(getUserList().keySet());
-        Map<Integer, List<BettingInfo>> bettingInfo = new TreeMap<>(); // matchId, BettingInfo
+        Map<Pair<Integer, Integer>, List<Betting>> bettingInfo = new TreeMap<>(); // matchId, bettingOption, Betting
 
         // ascending order
         userList.sort(new Comparator<String>() {
@@ -315,11 +315,12 @@ public class Server {
                     } else if(compareTimes(currentTime, match.matchTime)>-1){ // LATE_BETTING
                         user.updateBettingIdMap(matchId, bettingOption, ErrorCode.LATE_BETTING);
                     } else { // valid
-                        // 같은 유저 같은 옵션에 대한 betting은 하나로 합치기 (-1인 경우만)
-                        // bettingBook update
-                        // bettingIdMap에서 bettingId update <- match마다 1부터 시작
+                        // TODO 생각을 해보고 짜기
+                        // bettingInfo 에서 match id와 bettingOption으로 betting 찾기
+                        // userId 같은게 잇으면 coin 추가, bettingIdMap에서 betting id 기존 걸로 쓰기
+                        // 없으면 새로 만들기,  betting list 길이 + 1 해서 bettingIdMap에서 betting id set
+                        // matchCoinMap 도 갱신 (해당 유저가 한 match에 쓴 돈)
                         // info update <- current odd & total betting update
-
                     }
 
                     // refund (error code 인 것들에 대해)
@@ -367,15 +368,15 @@ public class Server {
         return true;
     }
 
-    static class BettingInfo {
-        String userId;
-        int bettingOption;
-        int coin;
-
-        public BettingInfo(String userId, int bettingOption, int coin) {
-            this.userId = userId;
-            this.bettingOption = bettingOption;
-            this.coin = coin;
-        }
-    }
+//    static class BettingInfo {
+//        String userId;
+//        int bettingOption;
+//        int coin;
+//
+//        public BettingInfo(String userId, int bettingOption, int coin) {
+//            this.userId = userId;
+//            this.bettingOption = bettingOption;
+//            this.coin = coin;
+//        }
+//    }
 }
