@@ -86,8 +86,14 @@ public class User {
 
     public int updateBettingId(int matchId, int bettingOption, int newBettingId){
         // TODO Problem 2-2
-        bettingIdMap.put(new Pair<>(matchId, bettingOption), newBettingId);
-
+        //System.out.println(newBettingId);
+        int bettingId = -1;
+        if(bettingIdMap.get(new Pair<>(matchId, bettingOption))!=null) {
+            bettingId = bettingIdMap.get(new Pair<>(matchId, bettingOption));
+        };
+        if(bettingId==-1){
+            bettingIdMap.put(new Pair<>(matchId, bettingOption), newBettingId);
+        }
 		return 0;
     }
 }

@@ -311,23 +311,23 @@ public class Server {
                         user.updateBettingId(matchId, bettingOption, ErrorCode.MATCH_NOT_FOUND);
                         user.receiveCoin(coinsBet);
                         user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
-                    } else if (match.numBets <= bettingOption) { // INVALID_BETTING
-                        user.updateBettingId(matchId, bettingOption, ErrorCode.INVALID_BETTING);
-                        user.receiveCoin(coinsBet);
-                        user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else if (compareTimes(currentTime, match.matchTime) > -1) { // LATE_BETTING
                         user.updateBettingId(matchId, bettingOption, ErrorCode.LATE_BETTING);
                         user.receiveCoin(coinsBet);
                         user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
+                    } else if (match.numBets <= bettingOption) { // INVALID_BETTING
+                        user.updateBettingId(matchId, bettingOption, ErrorCode.INVALID_BETTING);
+                        user.receiveCoin(coinsBet);
+                        user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else { // valid
                         List<Betting> bettings = bettingInfo.get(matchId);
-                        List<Betting> bettingBook = getBettingBook(matchId);
-                        int alreadyBet = 0;
+                        //List<Betting> bettingBook = getBettingBook(matchId);
+                        //int alreadyBet = 0;
                         if (bettings == null) {
                             List<Betting> newBettings = new LinkedList<>();
                             newBettings.add(new Betting(userId, matchId, bettingOption, coinsBet));
                             bettingInfo.put(matchId, newBettings);
-                            user.updateBettingId(matchId, bettingOption, alreadyBet+ 1);
+                            user.updateBettingId(matchId, bettingOption, 1);
                             match.incrementCoin(bettingOption, coinsBet);
                             match.totalBets++;
                         } else {
@@ -338,13 +338,13 @@ public class Server {
                                     betting.coin += coinsBet;
                                     isExist = true;
                                     int newId = 0;
-                                    user.updateBettingId(matchId, bettingOption, alreadyBet+ i + 1);
+                                    user.updateBettingId(matchId, bettingOption, i+1);
                                     match.incrementCoin(bettingOption, coinsBet);
                                 }
                             }
                             if (!isExist) {
                                 bettings.add(new Betting(userId, matchId, bettingOption, coinsBet));
-                                user.updateBettingId(matchId, bettingOption, alreadyBet + bettings.size());
+                                user.updateBettingId(matchId, bettingOption, bettings.size());
                                 match.incrementCoin(bettingOption, coinsBet);
                                 match.totalBets++;
                             }
@@ -371,8 +371,12 @@ public class Server {
                 try {
                     BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
                     String bets = "";
-                    for (Betting betting : bettingInfo.get(matchId)) {
+                    for(int i=0; i<bettingInfo.get(matchId).size(); i++){
+                    //for (Betting betting : bettingInfo.get(matchId)) {
+                        Betting betting = bettingInfo.get(matchId).get(i);
                         bets += betting.userId + "|" + betting.betNumber + "|" + betting.coin + "\n";
+                       // User user = searchUser(betting.userId);
+                        //user.updateBettingId(matchId, betting.betNumber, i+1);
                     }
                     writer.append(bets);
                     writer.close();
@@ -402,8 +406,12 @@ public class Server {
                 try {
                     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                     String bets = "";
-                    for (Betting betting : bettingBook) {
+                    for(int i=0; i<bettingBook.size(); i++){
+                    //for (Betting betting : bettingBook) {
+                        Betting betting = bettingBook.get(i);
                         bets += betting.userId + "|" + betting.betNumber + "|" + betting.coin + "\n";
+                        //User user = searchUser(betting.userId);
+                        //user.updateBettingId(matchId, betting.betNumber, i+1);
                     }
                     writer.write(bets);
                     writer.close();
@@ -433,6 +441,18 @@ public class Server {
                 writer.close();
             } catch (IOException e) {
                 continue;
+            }
+        }
+
+        for(int matchId: matchList.keySet()){
+            List<Betting> bettingBook = getBettingBook(matchId);
+            if(bettingBook==null) continue;
+            for(int i=0; i<bettingBook.size(); i++){
+            //for(Betting betting: bettingBook){
+                Betting betting = bettingBook.get(i);
+                User user = searchUser(betting.userId);
+                //System.out.println("i: " + i);
+                user.updateBettingId(matchId, betting.betNumber, i+1);
             }
         }
 

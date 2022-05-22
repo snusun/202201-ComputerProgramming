@@ -27,10 +27,10 @@ public class Test2 {
         /*for(int i=0; i<16; i++){
             makeUserFolder(String.format("2020-000%02d", i));
         }*/
-        TestCase();
+        TestCase(); //max 10000
 
-        userQuestionIdTestCase();
-        customTestY();
+        //userQuestionIdTestCase();
+        //customTestY(); // 15000
     }
 
     static void printOX(String prompt, boolean condition) {
@@ -170,6 +170,7 @@ public class Test2 {
             result = user.bet(1, 8, 15000);
             printOX("14: ", result == ErrorCode.OVER_MAX_BETTING);
             result = user.bet(1, 8, 5000);
+            //System.out.println(result +" " + state.betId(1, 1, 8) );
             printOX("15: ", result == ErrorCode.SUCCESS && state.betId(1, 1, 8) == -1);
             result = user.bet(2, 5, 6000);
             printOX("16: ", result == ErrorCode.NOT_ENOUGH_COINS);
@@ -186,6 +187,7 @@ public class Test2 {
             printOX("18: ", state.betId(1, 5, 1) == 8);
             user.updateBettingId(1, 2, 5);
             user.updateBettingId(1, 2, 10);
+            System.out.println(state.betId(1, 1, 2));
             printOX("19: ", state.betId(1, 1, 2) == 5);
             state.server().collectBettings();
         }
@@ -198,6 +200,7 @@ public class Test2 {
             user.bet(9, 1, 100); // match not found
             printOX("20: ", user.getTotalCoin() == 19600);
             state.server().collectBettings();
+            //System.out.println(state.betId(1, 6, 1));
             printOX("21: ", state.betId(1, 6, 1) == ErrorCode.LATE_BETTING);
             // Spec doesn't explicitly state that
             // collectBetting should assign smallest error code but just to be safe
@@ -235,6 +238,7 @@ public class Test2 {
             state.user(1).bet(1, 0, 1000);
             state.server().collectBettings();
             printOX("32: ", state.betId(1, 1, 0) == 1);
+            System.out.println(state.betId(2, 1, 0));
             printOX("33: ", state.betId(2, 1, 0) == 2);
             printOX("34: ", state.user(1).getTotalCoin() == 14500);
             state.server().settleMatch(1, 0);
@@ -285,18 +289,18 @@ public class Test2 {
             if(i==2 || i==5 || i==9 || i==13) server.collectBettings();
         }
         System.out.println("ID test: ");
-        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,1)));
-        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,2)));
-        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,4)));
-        System.out.println(userList.get("User#2").bettingIdMap.get(new Pair<>(0,1)));
-        System.out.println(userList.get("User#2").bettingIdMap.get(new Pair<>(0,2)));
-        System.out.println(userList.get("User#3").bettingIdMap.get(new Pair<>(0,1)));
-        System.out.println(userList.get("User#3").bettingIdMap.get(new Pair<>(0,3)));
-        System.out.println(userList.get("User#4").bettingIdMap.get(new Pair<>(0,1)));
-        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,1)));
-        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,3)));
-        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,4)));
-        System.out.println(userList.get("User#6").bettingIdMap.get(new Pair<>(0,1)));
+//        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,1)));
+//        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,2)));
+//        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,4)));
+//        System.out.println(userList.get("User#2").bettingIdMap.get(new Pair<>(0,1)));
+//        System.out.println(userList.get("User#2").bettingIdMap.get(new Pair<>(0,2)));
+//        System.out.println(userList.get("User#3").bettingIdMap.get(new Pair<>(0,1)));
+//        System.out.println(userList.get("User#3").bettingIdMap.get(new Pair<>(0,3)));
+//        System.out.println(userList.get("User#4").bettingIdMap.get(new Pair<>(0,1)));
+//        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,1)));
+//        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,3)));
+//        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,4)));
+//        System.out.println(userList.get("User#6").bettingIdMap.get(new Pair<>(0,1)));
         printOX("User#1 option1 ID:",userList.get("User#1").bettingIdMap.get(new Pair<>(0,1))==1);
         printOX("User#1 option2 ID:",userList.get("User#1").bettingIdMap.get(new Pair<>(0,2))==1);
         printOX("User#1 option4 ID:",userList.get("User#1").bettingIdMap.get(new Pair<>(0,4))==2);
