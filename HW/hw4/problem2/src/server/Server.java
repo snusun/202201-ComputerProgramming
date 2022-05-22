@@ -344,8 +344,11 @@ public class Server {
                             // id 1로 set bettingIdMap
                             user.updateBettingId(matchId, bettingOption, 1);
                             //bettingNum++;
+                            System.out.println("increment");
                             match.incrementCoin(bettingOption, coinsBet);
+                            System.out.println(match.totalCoin);
                             match.totalBets++;
+                            System.out.println("totalBets: " + match.totalBets);
                         } else {
                             boolean isExist = false;
                             for(int i=0; i<bettings.size(); i++){
@@ -384,7 +387,8 @@ public class Server {
         // betting info
         // TODO update betting book
         // info update <- current odd & total betting update
-        for(Match match: getMatchList().values()){
+        for(Match match: matchList.values()){
+            System.out.println(match);
             String infoPath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_info.txt";
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(infoPath));
@@ -397,7 +401,7 @@ public class Server {
                 writer.write(matchInfo);
                 writer.close();
             } catch (IOException e) {
-                return ErrorCode.IO_ERROR;
+                continue;
             }
         }
 

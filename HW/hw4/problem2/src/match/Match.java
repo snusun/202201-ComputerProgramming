@@ -50,6 +50,7 @@ public class Match {
             for(int i=0; i<numBets; i++) {
                 if (coins[i] != 0) {
                     currentOdds[i] = (double) totalCoin / coins[i];
+                    System.out.println("odd with " + i + ": " + currentOdds[i]);
                 }
             }
         }
