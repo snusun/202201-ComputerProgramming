@@ -275,7 +275,6 @@ public class Server {
 
     public int collectBettings() {
         // TODO Problem 2-2
-        // TODO betting book 참고해야할듯
 
         // userList
         List<String> userList = new LinkedList<>(getUserList().keySet());
@@ -315,19 +314,19 @@ public class Server {
                     int coinsBet = Integer.parseInt(info[2]);
 
                     // not valid
-                        // bettingIdMap updated with the error code
-                        // coin refund
+                    // bettingIdMap updated with the error code
+                    // coin refund
                     // refund (error code 인 것들에 대해)
                     // matchCoinMap 도 갱신 (빼주기) (해당 유저가 한 match에 쓴 돈)
                     Match match = searchMatch(matchId);
 
-                    if(match==null){ // MATCH_NOT_FOUND
+                    if (match == null) { // MATCH_NOT_FOUND
                         user.updateBettingIdMap(matchId, bettingOption, ErrorCode.MATCH_NOT_FOUND);
                         user.receiveCoin(coinsBet);
-                    } else if(match.numBets<=bettingOption){ // INVALID_BETTING
+                    } else if (match.numBets <= bettingOption) { // INVALID_BETTING
                         user.updateBettingIdMap(matchId, bettingOption, ErrorCode.INVALID_BETTING);
                         user.receiveCoin(coinsBet);
-                    } else if(compareTimes(currentTime, match.matchTime)>-1){ // LATE_BETTING
+                    } else if (compareTimes(currentTime, match.matchTime) > -1) { // LATE_BETTING
                         user.updateBettingIdMap(matchId, bettingOption, ErrorCode.LATE_BETTING);
                         user.receiveCoin(coinsBet);
                     } else { // valid
@@ -337,32 +336,32 @@ public class Server {
                         // matchCoinMap 도 갱신 (해당 유저가 한 match에 쓴 돈)
                         // info update <- current odd & total betting update
                         List<Betting> bettings = bettingInfo.get(matchId);
-                        if(bettings==null){
+                        if (bettings == null) {
                             List<Betting> newBettings = new LinkedList<>();
                             newBettings.add(new Betting(userId, matchId, bettingOption, coinsBet));
                             bettingInfo.put(matchId, newBettings);
                             // id 1로 set bettingIdMap
                             user.updateBettingId(matchId, bettingOption, 1);
                             //bettingNum++;
-                            System.out.println("increment");
+                            //System.out.println("increment");
                             match.incrementCoin(bettingOption, coinsBet);
-                            System.out.println(match.totalCoin);
+                            //System.out.println(match.totalCoin);
                             match.totalBets++;
-                            System.out.println("totalBets: " + match.totalBets);
+                            //System.out.println("totalBets: " + match.totalBets);
                         } else {
                             boolean isExist = false;
-                            for(int i=0; i<bettings.size(); i++){
-                            //for(Betting betting: bettings){
+                            for (int i = 0; i < bettings.size(); i++) {
+                                //for(Betting betting: bettings){
                                 Betting betting = bettings.get(i);
-                                if(betting.userId.equals(userId) && betting.betNumber==bettingOption){
+                                if (betting.userId.equals(userId) && betting.betNumber == bettingOption) {
                                     betting.coin += coinsBet;
                                     isExist = true;
                                     // idx + 1 로 id set bettingIdMap
-                                    user.updateBettingId(matchId, bettingOption, i+1);
+                                    user.updateBettingId(matchId, bettingOption, i + 1);
                                     match.incrementCoin(bettingOption, coinsBet);
                                 }
                             }
-                            if(!isExist) {
+                            if (!isExist) {
                                 bettings.add(new Betting(userId, matchId, bettingOption, coinsBet));
                                 // 길이로 id set bettingIdMap
                                 user.updateBettingId(matchId, bettingOption, bettings.size());
@@ -385,19 +384,19 @@ public class Server {
         }
 
         // betting info
-        // TODO update betting book
         // info update <- current odd & total betting update
-        for(Match match: matchList.values()){
-            System.out.println(match);
+
+        for (Match match : matchList.values()) {
+            //System.out.println(match);
             String infoPath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_info.txt";
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(infoPath));
                 String matchInfo = match.homeTeam + "|" + match.awayTeam + "|" + match.location + "|" + match.matchTime + "|" +
                         match.numBets + "|";
-                for(double odd: match.currentOdds){
+                for (double odd : match.currentOdds) {
                     matchInfo += odd + "|";
                 }
-                matchInfo+=match.totalCoin;
+                matchInfo += match.totalCoin;
                 writer.write(matchInfo);
                 writer.close();
             } catch (IOException e) {
@@ -415,7 +414,55 @@ public class Server {
 //        }
 
 
+        // getBettingBook 순회하며 bettingInfo도 순회
+        //  Map<Integer, List<Betting>> bettingInfo = new TreeMap<>(); // matchId, Betting
+        // bettingbook에 있으면 coin만 추가, 없으면 append
+        // bettingBook list에서 bettingBook.txt로 다시 쓰기
+
+//        for (int matchId : bettingInfo.keySet()) {
+//            List<Betting> bettingBook = getBettingBook(matchId);
+//
+//            for (Betting betting : bettingInfo.get(matchId)) {
+//                boolean isExist = false;
+//                if (bettingBook != null) {
+//                    for (Betting betInBook : bettingBook) {
+//                        if (betting == betInBook) {
+//                            betInBook.coin += betting.coin;
+//                            isExist = true;
+//                        }
+//                    }
+//                }
+//                if (!isExist) {
+//                    if(bettingBook==null) bettingBook = new LinkedList<Betting>();
+//                    bettingBook.add(betting);
+//                }
+//            }
+//
+//            Match match = searchMatch(matchId);
+//            String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_bettingBook.txt";
+//            File file = new File(filePath);
+//            try {
+//                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+//                String bets = "";
+//                for (Betting betting : bettingInfo.get(matchId)) {
+//                    bets += betting.userId + "|" + betting.betNumber + "|" + betting.coin + "\n";
+//                }
+//                writer.write(bets);
+//                writer.close();
+//            } catch (IOException e) {
+//                return ErrorCode.IO_ERROR;
+//            }
+//
+//        }
+
+
         for(int matchId: bettingInfo.keySet()){
+            //List<Betting> bettingBook = getBettingBook(matchId);
+            System.out.println("matchId: " + matchId + " bettingInfo");
+            for(Betting betting: bettingInfo.get(matchId)){
+                System.out.println(betting);
+            }
+
             // file 열고 list에 잇는 betting 적기
             Match match = searchMatch(matchId);
             String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_bettingBook.txt";
@@ -454,6 +501,7 @@ public class Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            //return null;
         }
 
         return bettingBook;
@@ -461,6 +509,55 @@ public class Server {
 
     public boolean settleMatch(int matchId, int winNumber) {
         // TODO Problem 2-3
+        Match match = searchMatch(matchId);
+//        System.out.println("settle");
+//        System.out.println(match);
+
+        // odd와 commition 계산
+        //double odd = Math.round(match.currentOdds[winNumber]*100)/100.0;
+        double odd = match.currentOdds[winNumber];
+        //System.out.println(odd);
+        double commission = 0.96;
+
+        // betting book에서 이긴 사람들 refund 정수 round
+        List<Betting> bettingBook = getBettingBook(matchId);
+        if (bettingBook == null) return false;
+        for (Betting betting : bettingBook) {
+            if (betting.betNumber == winNumber) {
+                User user = searchUser(betting.userId);
+                int refund = (int) Math.floor(commission * odd * betting.coin);
+//                System.out.println("betting info: " + betting.userId);
+//                System.out.println(user.getTotalCoin());
+//                System.out.println("refund: " + refund);
+                user.receiveCoin(refund);
+                //System.out.println(user.getTotalCoin());
+                // matchCoinMap match id에 해당하는 coin 0으로 초기화
+                user.matchCoinMap.put(matchId, 0);
+            }
+        }
+
+        // info 초기화 currentOdds totalBets coins totalCoin
+        for (int i = 0; i < match.numBets; i++) {
+            match.coins[i] = 0;
+            match.currentOdds[i] = 0;
+        }
+        match.totalCoin = 0;
+        match.totalBets = 0;
+
+        String infoPath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_info.txt";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(infoPath));
+            String matchInfo = match.homeTeam + "|" + match.awayTeam + "|" + match.location + "|" + match.matchTime + "|" +
+                    match.numBets + "|";
+            for (double newOdd : match.currentOdds) {
+                matchInfo += newOdd + "|";
+            }
+            matchInfo += match.totalCoin;
+            writer.write(matchInfo);
+            writer.close();
+        } catch (IOException e) {
+            return false;
+        }
 
         return true;
     }

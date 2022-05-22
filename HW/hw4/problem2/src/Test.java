@@ -160,6 +160,11 @@ public class Test {
         server.settleMatch(0, 0);
         server.settleMatch(2, 1);
 
+//        System.out.println(userList.get("2022-00000").getTotalCoin());
+//        System.out.println(userList.get("2022-11111").getTotalCoin());
+//        System.out.println(userList.get("2022-22222").getTotalCoin());
+//        System.out.println(userList.get("2022-33333").getTotalCoin());
+//        System.out.println(userList.get("2022-44444").getTotalCoin());
         printOX("2.3.1: ", (userList.get("2022-00000").getTotalCoin() == 61837) );
         printOX("2.3.2: ", (userList.get("2022-11111").getTotalCoin() == 29666) );
         printOX("2.3.3: ", (userList.get("2022-22222").getTotalCoin() == 14000) );
@@ -170,7 +175,11 @@ public class Test {
         server.settleMatch(4, 0);
         server.settleMatch(5, 2);
 
-
+//        System.out.println(userList.get("2022-00000").getTotalCoin());
+//        System.out.println(userList.get("2022-11111").getTotalCoin());
+//        System.out.println(userList.get("2022-22222").getTotalCoin());
+//        System.out.println(userList.get("2022-33333").getTotalCoin());
+//        System.out.println(userList.get("2022-44444").getTotalCoin());
         printOX("2.3.6: ", (userList.get("2022-00000").getTotalCoin() == 112060) );
         printOX("2.3.7: ", (userList.get("2022-11111").getTotalCoin() == 29666) );
         printOX("2.3.8: ", (userList.get("2022-22222").getTotalCoin() == 14000) );
