@@ -419,65 +419,96 @@ public class Server {
         // bettingbook에 있으면 coin만 추가, 없으면 append
         // bettingBook list에서 bettingBook.txt로 다시 쓰기
 
+
+        for (int matchId : bettingInfo.keySet()) {
+            List<Betting> bettingBook = getBettingBook(matchId);
+
+            if (bettingBook == null) {
+//                for (Betting betting : bettingInfo.get(matchId)) {
+//                    System.out.println(betting);
+//                }
+
+                // file 열고 list에 잇는 betting 적기
+                Match match = searchMatch(matchId);
+                String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_bettingBook.txt";
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
+                    String bets = "";
+                    for (Betting betting : bettingInfo.get(matchId)) {
+                        bets += betting.userId + "|" + betting.betNumber + "|" + betting.coin + "\n";
+                    }
+                    writer.append(bets);
+                    writer.close();
+                } catch (IOException e) {
+                    return ErrorCode.IO_ERROR;
+                }
+            } else {
+//                System.out.println("before update betting book");
+//                for(Betting betInBook : bettingBook) {
+//                    System.out.println(betInBook);
+//                }
+                for (Betting betting : bettingInfo.get(matchId)) {
+                    boolean isExist = false;
+                    //if (bettingBook != null) {
+                    for (Betting betInBook : bettingBook) {
+                        if (betting.userId.equals(betInBook.userId) && betting.betNumber==betInBook.betNumber) {
+                            betInBook.coin += betting.coin;
+                            isExist = true;
+                            break;
+                        }
+                    }
+                    //}
+                    if (!isExist) {
+                        //if(bettingBook==null) bettingBook = new LinkedList<Betting>();
+                        bettingBook.add(betting);
+                    }
+                }
+
+//                System.out.println("after update betting book");
+//                for(Betting betInBook : bettingBook) {
+//                    System.out.println(betInBook);
+//                }
+
+                Match match = searchMatch(matchId);
+                String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_bettingBook.txt";
+                File file = new File(filePath);
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                    String bets = "";
+                    for (Betting betting : bettingBook) {
+                        bets += betting.userId + "|" + betting.betNumber + "|" + betting.coin + "\n";
+                    }
+                    writer.write(bets);
+                    writer.close();
+                } catch (IOException e) {
+                    return ErrorCode.IO_ERROR;
+                }
+            }
+        }
+
+
 //        for (int matchId : bettingInfo.keySet()) {
-//            List<Betting> bettingBook = getBettingBook(matchId);
-//
+//            //List<Betting> bettingBook = getBettingBook(matchId);
+//            System.out.println("matchId: " + matchId + " bettingInfo");
 //            for (Betting betting : bettingInfo.get(matchId)) {
-//                boolean isExist = false;
-//                if (bettingBook != null) {
-//                    for (Betting betInBook : bettingBook) {
-//                        if (betting == betInBook) {
-//                            betInBook.coin += betting.coin;
-//                            isExist = true;
-//                        }
-//                    }
-//                }
-//                if (!isExist) {
-//                    if(bettingBook==null) bettingBook = new LinkedList<Betting>();
-//                    bettingBook.add(betting);
-//                }
+//                System.out.println(betting);
 //            }
 //
+//            // file 열고 list에 잇는 betting 적기
 //            Match match = searchMatch(matchId);
 //            String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_bettingBook.txt";
-//            File file = new File(filePath);
 //            try {
-//                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+//                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
 //                String bets = "";
 //                for (Betting betting : bettingInfo.get(matchId)) {
 //                    bets += betting.userId + "|" + betting.betNumber + "|" + betting.coin + "\n";
 //                }
-//                writer.write(bets);
+//                writer.append(bets);
 //                writer.close();
 //            } catch (IOException e) {
 //                return ErrorCode.IO_ERROR;
 //            }
-//
 //        }
-
-
-        for(int matchId: bettingInfo.keySet()){
-            //List<Betting> bettingBook = getBettingBook(matchId);
-            System.out.println("matchId: " + matchId + " bettingInfo");
-            for(Betting betting: bettingInfo.get(matchId)){
-                System.out.println(betting);
-            }
-
-            // file 열고 list에 잇는 betting 적기
-            Match match = searchMatch(matchId);
-            String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_bettingBook.txt";
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
-                String bets = "";
-                for(Betting betting: bettingInfo.get(matchId)){
-                    bets+=betting.userId+"|" + betting.betNumber +"|"+betting.coin+"\n";
-                }
-                writer.append(bets);
-                writer.close();
-            } catch (IOException e) {
-                return ErrorCode.IO_ERROR;
-            }
-        }
 
         return ErrorCode.SUCCESS;
     }
@@ -500,8 +531,8 @@ public class Server {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            //return null;
+            //e.printStackTrace();
+            return null;
         }
 
         return bettingBook;
