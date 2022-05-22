@@ -27,10 +27,10 @@ public class Test2 {
         /*for(int i=0; i<16; i++){
             makeUserFolder(String.format("2020-000%02d", i));
         }*/
-        TestCase();
+        //TestCase();
 
         //userQuestionIdTestCase();
-        //customTestY();
+        customTestY();
     }
 
     static void printOX(String prompt, boolean condition) {
@@ -285,6 +285,18 @@ public class Test2 {
             if(i==2 || i==5 || i==9 || i==13) server.collectBettings();
         }
         System.out.println("ID test: ");
+        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,1)));
+        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,2)));
+        System.out.println(userList.get("User#1").bettingIdMap.get(new Pair<>(0,4)));
+        System.out.println(userList.get("User#2").bettingIdMap.get(new Pair<>(0,1)));
+        System.out.println(userList.get("User#2").bettingIdMap.get(new Pair<>(0,2)));
+        System.out.println(userList.get("User#3").bettingIdMap.get(new Pair<>(0,1)));
+        System.out.println(userList.get("User#3").bettingIdMap.get(new Pair<>(0,3)));
+        System.out.println(userList.get("User#4").bettingIdMap.get(new Pair<>(0,1)));
+        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,1)));
+        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,3)));
+        System.out.println(userList.get("User#5").bettingIdMap.get(new Pair<>(0,4)));
+        System.out.println(userList.get("User#6").bettingIdMap.get(new Pair<>(0,1)));
         printOX("User#1 option1 ID:",userList.get("User#1").bettingIdMap.get(new Pair<>(0,1))==1);
         printOX("User#1 option2 ID:",userList.get("User#1").bettingIdMap.get(new Pair<>(0,2))==1);
         printOX("User#1 option4 ID:",userList.get("User#1").bettingIdMap.get(new Pair<>(0,4))==2);
@@ -317,6 +329,12 @@ public class Test2 {
             String line=reader.readLine();
             String[] information=line.split("\\|");
             System.out.println("CurrentOdds: ");
+            System.out.println(information[5]);
+            System.out.println(information[6]);
+            System.out.println(information[7]);
+            System.out.println(information[8]);
+            System.out.println(information[9]);
+            System.out.println(information[10]);
             printOX("1: ",information[5].equals("0.00"));
             printOX("2: ",information[6].equals("1.68"));
             printOX("3: ",information[7].equals("7.13"));

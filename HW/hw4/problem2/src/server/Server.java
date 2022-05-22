@@ -12,6 +12,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
@@ -321,15 +322,15 @@ public class Server {
                     Match match = searchMatch(matchId);
 
                     if (match == null) { // MATCH_NOT_FOUND
-                        user.updateBettingIdMap(matchId, bettingOption, ErrorCode.MATCH_NOT_FOUND);
+                        user.updateBettingId(matchId, bettingOption, ErrorCode.MATCH_NOT_FOUND);
                         user.receiveCoin(coinsBet);
                         user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else if (match.numBets <= bettingOption) { // INVALID_BETTING
-                        user.updateBettingIdMap(matchId, bettingOption, ErrorCode.INVALID_BETTING);
+                        user.updateBettingId(matchId, bettingOption, ErrorCode.INVALID_BETTING);
                         user.receiveCoin(coinsBet);
                         user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else if (compareTimes(currentTime, match.matchTime) > -1) { // LATE_BETTING
-                        user.updateBettingIdMap(matchId, bettingOption, ErrorCode.LATE_BETTING);
+                        user.updateBettingId(matchId, bettingOption, ErrorCode.LATE_BETTING);
                         user.receiveCoin(coinsBet);
                         user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else { // valid
@@ -339,12 +340,15 @@ public class Server {
                         // matchCoinMap 도 갱신 (해당 유저가 한 match에 쓴 돈)
                         // info update <- current odd & total betting update
                         List<Betting> bettings = bettingInfo.get(matchId);
+                        List<Betting> bettingBook = getBettingBook(matchId);
+                        int alreadyBet = 0;
+                        //if(bettingBook!=null) alreadyBet = bettingBook.size();
                         if (bettings == null) {
                             List<Betting> newBettings = new LinkedList<>();
                             newBettings.add(new Betting(userId, matchId, bettingOption, coinsBet));
                             bettingInfo.put(matchId, newBettings);
                             // id 1로 set bettingIdMap
-                            user.updateBettingId(matchId, bettingOption, 1);
+                            user.updateBettingId(matchId, bettingOption, alreadyBet+ 1);
                             //bettingNum++;
                             //System.out.println("increment");
                             match.incrementCoin(bettingOption, coinsBet);
@@ -360,14 +364,15 @@ public class Server {
                                     betting.coin += coinsBet;
                                     isExist = true;
                                     // idx + 1 로 id set bettingIdMap
-                                    user.updateBettingId(matchId, bettingOption, i + 1);
+                                    int newId = 0;
+                                    user.updateBettingId(matchId, bettingOption, alreadyBet+ i + 1);
                                     match.incrementCoin(bettingOption, coinsBet);
                                 }
                             }
                             if (!isExist) {
                                 bettings.add(new Betting(userId, matchId, bettingOption, coinsBet));
                                 // 길이로 id set bettingIdMap
-                                user.updateBettingId(matchId, bettingOption, bettings.size());
+                                user.updateBettingId(matchId, bettingOption, alreadyBet + bettings.size());
                                 //bettingInfo.put(matchId, newBettings);
                                 //bettingNum++;
                                 match.incrementCoin(bettingOption, coinsBet);
@@ -384,27 +389,6 @@ public class Server {
 
             // newBettings.txt 삭제
             file.delete();
-        }
-
-        // betting info
-        // info update <- current odd & total betting update
-
-        for (Match match : matchList.values()) {
-            //System.out.println(match);
-            String infoPath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_info.txt";
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(infoPath));
-                String matchInfo = match.homeTeam + "|" + match.awayTeam + "|" + match.location + "|" + match.matchTime + "|" +
-                        match.numBets + "|";
-                for (double odd : match.currentOdds) {
-                    matchInfo += odd + "|";
-                }
-                matchInfo += match.totalCoin;
-                writer.write(matchInfo);
-                writer.close();
-            } catch (IOException e) {
-                continue;
-            }
         }
 
         // betting book write
@@ -457,6 +441,7 @@ public class Server {
                         if (betting.userId.equals(betInBook.userId) && betting.betNumber==betInBook.betNumber) {
                             betInBook.coin += betting.coin;
                             isExist = true;
+                            searchMatch(matchId).totalBets--;
                             break;
                         }
                     }
@@ -486,6 +471,33 @@ public class Server {
                 } catch (IOException e) {
                     return ErrorCode.IO_ERROR;
                 }
+            }
+        }
+
+        // betting info
+        // info update <- current odd & total betting update
+
+        for (Match match : matchList.values()) {
+            //System.out.println(match);
+            String infoPath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_info.txt";
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(infoPath));
+                String matchInfo = match.homeTeam + "|" + match.awayTeam + "|" + match.location + "|" + match.matchTime + "|" +
+                        match.numBets + "|";
+                for (double odd : match.currentOdds) {
+                    odd = Math.round(odd*100)/100.0;
+                    //String oddStirng = if((odd+"").length())
+                    DecimalFormat formatter = new DecimalFormat("0.00");
+                    //double data2 = 0.127d;
+                    String ret = formatter.format(odd);
+
+                    matchInfo += ret + "|";
+                }
+                matchInfo += match.totalBets;
+                writer.write(matchInfo);
+                writer.close();
+            } catch (IOException e) {
+                continue;
             }
         }
 
