@@ -1,0 +1,3 @@
+/Users/home/Downloads/Lab10_skeleton/cmake-build-debug/CMakeFiles/Lab10.dir
+/Users/home/Downloads/Lab10_skeleton/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/home/Downloads/Lab10_skeleton/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -323,12 +323,15 @@ public class Server {
                     if (match == null) { // MATCH_NOT_FOUND
                         user.updateBettingIdMap(matchId, bettingOption, ErrorCode.MATCH_NOT_FOUND);
                         user.receiveCoin(coinsBet);
+                        user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else if (match.numBets <= bettingOption) { // INVALID_BETTING
                         user.updateBettingIdMap(matchId, bettingOption, ErrorCode.INVALID_BETTING);
                         user.receiveCoin(coinsBet);
+                        user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else if (compareTimes(currentTime, match.matchTime) > -1) { // LATE_BETTING
                         user.updateBettingIdMap(matchId, bettingOption, ErrorCode.LATE_BETTING);
                         user.receiveCoin(coinsBet);
+                        user.matchCoinMap.put(matchId, user.matchCoinMap.get(matchId)-coinsBet);
                     } else { // valid
                         // bettingInfo 에서 match id와 bettingOption으로 betting 찾기
                         // userId 같은게 잇으면 coin 추가, bettingIdMap에서 betting id 기존 걸로 쓰기

@@ -53,7 +53,7 @@ public class User {
         if(coin<=0) return ErrorCode.NEGATIVE_BETTING;
 
         matchCoinMap.putIfAbsent(matchId, 0);
-        if(matchCoinMap.get(matchId)+coin > 15000) return ErrorCode.OVER_MAX_BETTING;
+        if(matchCoinMap.get(matchId)+coin > Config.MAX_COINS_PER_MATCH) return ErrorCode.OVER_MAX_BETTING;
         //if() 한 매치에 15000을 넘으면 안됨 ErrorCode.OVER_MAX_BETTING; Betting Book + New Bettings를 모두 고려해야합니다.
 
         if(getTotalCoin() < coin) return ErrorCode.NOT_ENOUGH_COINS;
