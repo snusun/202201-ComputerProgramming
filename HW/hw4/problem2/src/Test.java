@@ -22,7 +22,7 @@ public class Test {
     public static String solutionFolder = "solution/";
 
     public static void main(String[] args) {
-        //resetDirs(dataFolder);
+        resetDirs(dataFolder);
         Problem2_1TestCase();
         Problem2_2TestCase();
         Problem2_3TestCase();
@@ -247,6 +247,8 @@ public class Test {
 
         List<Betting> solution = server.getBettingBook(matchId);
         for(int i=0; i<solution.size(); i++){
+            //Betting bet = betting.get(i);
+            //Betting sol = solution.get(i);
             if (!betting.get(i).equals(solution.get(i))){
                 return false;
             }

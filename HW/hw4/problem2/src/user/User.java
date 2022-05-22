@@ -49,6 +49,7 @@ public class User {
 
     public int bet(int matchId, int bettingOption, int coin){
         // TODO Problem 2-2
+        System.out.println("[USER] bet method: " + matchId + " " + bettingOption + " " + coin);
         if(coin<=0) return ErrorCode.NEGATIVE_BETTING;
 
         matchCoinMap.putIfAbsent(matchId, 0);
@@ -63,9 +64,13 @@ public class User {
 
         // betting 처리
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            writer.write(bettingContent);
-            writer.close();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+            bw.append(bettingContent);
+            bw.close();
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+//            System.out.println("[USER] betting content: " + bettingContent );
+//            writer.write(bettingContent);
+//            writer.close();
         } catch (IOException e) {
             return ErrorCode.IO_ERROR;
         }

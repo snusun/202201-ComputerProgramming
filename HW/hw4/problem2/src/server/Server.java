@@ -290,10 +290,15 @@ public class Server {
             }
         });
 
-        int bettingNum = 0;
+//        for(String userId: userList){
+//            System.out.println(userId);
+//        }
+
+        //int bettingNum = 0;
 
         // traverse
         for (String userId : userList) {
+            //System.out.println("[SERVER] User Id: " + userId);
             String filePath = DATA_FOLDER + "Users/" + userId + "/newBettings.txt";
             File file = new File(filePath);
             User user = searchUser(userId);
@@ -344,7 +349,7 @@ public class Server {
                             for(int i=0; i<bettings.size(); i++){
                             //for(Betting betting: bettings){
                                 Betting betting = bettings.get(i);
-                                if(betting.userId.equals(userId)){
+                                if(betting.userId.equals(userId) && betting.betNumber==bettingOption){
                                     betting.coin += coinsBet;
                                     isExist = true;
                                     // idx + 1 로 id set bettingIdMap
@@ -356,6 +361,7 @@ public class Server {
                                 bettings.add(new Betting(userId, matchId, bettingOption, coinsBet));
                                 // 길이로 id set bettingIdMap
                                 user.updateBettingId(matchId, bettingOption, bettings.size());
+                                //bettingInfo.put(matchId, newBettings);
                                 //bettingNum++;
                                 match.incrementCoin(bettingOption, coinsBet);
                                 match.totalBets++;
@@ -420,14 +426,11 @@ public class Server {
         Match match = searchMatch(matchId);
         String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + matchId + "/" + matchId + "_bettingBook.txt";
         File file = new File(filePath);
-        String matchInfo = null;
+        //String matchInfo = null;
         try {
             BufferedReader inFile = new BufferedReader(new FileReader(file));
             String sLine = null;
             while ((sLine = inFile.readLine()) != null) {
-                //matchInfo = Files.readString(Path.of(filePath));
-                //assert matchInfo != null;
-                //matchInfo = matchInfo.replace("\n", "");
                 String[] bettingInfo = sLine.split("\\|");
                 for (int i = 0; i < bettingInfo.length / 3; i += 3) {
                     Betting betting = new Betting(bettingInfo[i], matchId, Integer.parseInt(bettingInfo[i + 1]), Integer.parseInt(bettingInfo[i + 2]));
