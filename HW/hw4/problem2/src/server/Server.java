@@ -300,13 +300,15 @@ public class Server {
         for (String userId : userList) {
             //System.out.println("[SERVER] User Id: " + userId);
             String filePath = DATA_FOLDER + "Users/" + userId + "/newBettings.txt";
+            //System.out.println(filePath);
             File file = new File(filePath);
             User user = searchUser(userId);
             try {
-
                 BufferedReader inFile = new BufferedReader(new FileReader(file));
                 String sLine = null;
+                //System.out.println(userId);
                 while ((sLine = inFile.readLine()) != null) {
+                    //System.out.println(sLine);
                     String[] info = sLine.split("\\|");
                     int matchId = Integer.parseInt(info[0]);
                     int bettingOption = Integer.parseInt(info[1]);
@@ -371,7 +373,8 @@ public class Server {
                 }
 
             } catch (IOException e) {
-                return ErrorCode.IO_ERROR;
+                continue;
+                //return ErrorCode.IO_ERROR;
             }
 
             // newBettings.txt 삭제
@@ -400,17 +403,25 @@ public class Server {
 
         // betting book write
         // Map<Integer, List<Betting>> bettingInfo = new TreeMap<>(); // matchId, Betting
+
+//        System.out.println("[SERVER] betting info");
+//        for(int matchId: bettingInfo.keySet()){
+//
+//            System.out.println(bettingInfo.get(matchId));
+//        }
+
+
         for(int matchId: bettingInfo.keySet()){
             // file 열고 list에 잇는 betting 적기
             Match match = searchMatch(matchId);
             String filePath = DATA_FOLDER + "/Matches/" + match.sportsType + "/" + match.matchId + "/" + match.matchId + "_bettingBook.txt";
             try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
                 String bets = "";
                 for(Betting betting: bettingInfo.get(matchId)){
                     bets+=betting.userId+"|" + betting.betNumber +"|"+betting.coin+"\n";
                 }
-                writer.write(bets);
+                writer.append(bets);
                 writer.close();
             } catch (IOException e) {
                 return ErrorCode.IO_ERROR;

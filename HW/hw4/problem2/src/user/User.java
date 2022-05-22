@@ -49,7 +49,7 @@ public class User {
 
     public int bet(int matchId, int bettingOption, int coin){
         // TODO Problem 2-2
-        System.out.println("[USER] bet method: " + matchId + " " + bettingOption + " " + coin);
+        //System.out.println("[USER] bet method: " + matchId + " " + bettingOption + " " + coin);
         if(coin<=0) return ErrorCode.NEGATIVE_BETTING;
 
         matchCoinMap.putIfAbsent(matchId, 0);

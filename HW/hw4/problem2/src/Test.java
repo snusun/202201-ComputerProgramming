@@ -22,7 +22,7 @@ public class Test {
     public static String solutionFolder = "solution/";
 
     public static void main(String[] args) {
-        resetDirs(dataFolder);
+        //resetDirs(dataFolder);
         Problem2_1TestCase();
         Problem2_2TestCase();
         Problem2_3TestCase();
@@ -103,6 +103,7 @@ public class Test {
     static void Problem2_2TestCase() {
         println("Problem 2.2.");
         Server server = startServer();
+        //System.out.println("startServer end");
 
         Map<String, User> userList = server.getUserList();
 
