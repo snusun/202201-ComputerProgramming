@@ -27,9 +27,9 @@ public class Test2 {
         /*for(int i=0; i<16; i++){
             makeUserFolder(String.format("2020-000%02d", i));
         }*/
-        //TestCase();
+        TestCase();
 
-        //userQuestionIdTestCase();
+        userQuestionIdTestCase();
         customTestY();
     }
 
