@@ -7,7 +7,12 @@
 class Grid {
     int **grid;
     int row, column;
+    static int count;
+    //public: static int count;
+
 public:
+    //static int count;
+
     //TODO Prob1.1 initialize Grid with zeros
     Grid(int r, int c);
 
@@ -23,13 +28,13 @@ public:
 
     void printGrid();
 
-    }
+    void mark_point(Point p);
 
     //TODO Prob1.2 create explicit copy constructor
     Grid(Grid const &g);
 
     //TODO Prob1.3 Add proper clean-up code!
-    //~Grid();
+    ~Grid();
 };
 
 #endif

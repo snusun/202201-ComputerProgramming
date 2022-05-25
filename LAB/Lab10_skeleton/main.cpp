@@ -116,7 +116,7 @@ void problem3(){
     g.printGrid();
 }
 
-/*
+
 void exercise(){
     Grid g(2,3);
     g.printGrid();
@@ -131,12 +131,12 @@ void exercise(){
 
     g.printGrid();
 }
-*/
+
 
 int main() {
-    //problem1();
-    //problem2();
+    problem1();
+    problem2();
     problem3();
-    //exercise();
+    exercise();
     return 0;
 }
