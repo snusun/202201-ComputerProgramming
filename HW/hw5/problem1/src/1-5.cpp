@@ -29,7 +29,7 @@ void LabelComponent(unsigned short* STACK, unsigned short width, unsigned short 
     index = X + width*Y;
     if (input [index] == 255) RETURN;   /* This pixel is not part of a component */
     if (output[index] != 255) RETURN;   /* This pixel has already been labelled  */
-    output[index] = labelNo;
+    output[index] = labelNo*50;
 
     if (X > 0) CALL_LabelComponent(X-1, Y, 1);   /* left  pixel */
     RETURN1:
@@ -51,22 +51,22 @@ void Labeling(uint8_t *input_image, uint8_t *output_image, int width, int height
     std::cout << "HI" << std::endl;
     memset(output_image, 255, width*height*sizeof(uint8_t));
 
-//    unsigned short* STACK = (unsigned short*) malloc(3*sizeof(unsigned short)*(width*height + 1));
-//
-//    int labelNo = 0;
-//    int index   = -1;
-//    for (unsigned short y = 0; y < height; y++)
-//    {
-//        for (unsigned short x = 0; x < width; x++)
-//        {
-//            index++;
-//            if (input_image[index] == 255) continue;   /* This pixel is not part of a component */
-//            if (output_image[index] != 255) continue;   /* This pixel has already been labelled  */
-//            /* New component found */
-//            labelNo++;
-//            LabelComponent(STACK, width, height, input_image, output_image, labelNo, x, y);
-//        }
-//    }
-//
-//    free(STACK);
+    unsigned short* STACK = (unsigned short*) malloc(3*sizeof(unsigned short)*(width*height + 1));
+
+    int labelNo = 0;
+    int index   = -1;
+    for (unsigned short y = 0; y < height; y++)
+    {
+        for (unsigned short x = 0; x < width; x++)
+        {
+            index++;
+            if (input_image[index] == 255) continue;   /* This pixel is not part of a component */
+            if (output_image[index] != 255) continue;   /* This pixel has already been labelled  */
+            /* New component found */
+            labelNo++;
+            LabelComponent(STACK, width, height, input_image, output_image, labelNo, x, y);
+        }
+    }
+
+    free(STACK);
 }

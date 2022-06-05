@@ -1,3 +1,0 @@
-/Users/home/Desktop/컴퓨터프로그래밍/git/HW/hw5/problem2/cmake-build-debug/CMakeFiles/problem2.dir
-/Users/home/Desktop/컴퓨터프로그래밍/git/HW/hw5/problem2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/home/Desktop/컴퓨터프로그래밍/git/HW/hw5/problem2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
