@@ -67,6 +67,8 @@ int main() {
     CheckArray(res, {1,3,3,1}, 4);
     res = PascalTriangle(5);
     CheckArray(res, {1,4,6,4,1}, 5);
+    res = PascalTriangle(11);
+    CheckArray(res, {1,10,45,120,210,252,210,120,45,10,1}, 11);
     delete[] res;
 
     // 1.5
