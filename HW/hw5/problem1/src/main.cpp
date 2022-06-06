@@ -74,7 +74,7 @@ int main() {
     // 1.5
     std::cout << "1-5" << std::endl;
     int width, height, channels;
-    uint8_t* input_image = stbi_load("test/input4.png", &width, &height, &channels, 0);
+    uint8_t* input_image = stbi_load("test/input7.png", &width, &height, &channels, 0);
     if(input_image == NULL) {
         printf("Error in loading the image\n");
         exit(1);
