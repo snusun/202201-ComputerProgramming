@@ -1,0 +1,5 @@
+/Users/home/Desktop/컴퓨터프로그래밍/git/LAB/lab12_skeleton/cmake-build-debug/CMakeFiles/smartpointer.dir
+/Users/home/Desktop/컴퓨터프로그래밍/git/LAB/lab12_skeleton/cmake-build-debug/CMakeFiles/stl.dir
+/Users/home/Desktop/컴퓨터프로그래밍/git/LAB/lab12_skeleton/cmake-build-debug/CMakeFiles/lab12.dir
+/Users/home/Desktop/컴퓨터프로그래밍/git/LAB/lab12_skeleton/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/home/Desktop/컴퓨터프로그래밍/git/LAB/lab12_skeleton/cmake-build-debug/CMakeFiles/rebuild_cache.dir
