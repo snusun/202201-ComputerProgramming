@@ -11,12 +11,12 @@ public:
     User(std::string name, std::string password);
     const std::string name;
     void add_purchase_history(Product* product);
+    bool check_password(std::string password);
 private:
     std::string password;
 };
 
 class NormalUser : public User {
-
 };
 
 class PremiumUser : public User {

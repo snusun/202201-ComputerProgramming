@@ -11,6 +11,7 @@ class ClientUI : public UI {
         void signup(std::string username, std::string password, bool premium);
         void login(std::string username, std::string password);
         void logout();
+        bool check_current_user();
         void add_to_cart(std::string product_name);
         void list_cart_products();
         void buy(std::string product_name);
