@@ -9,17 +9,15 @@ void AdminUI::add_product(std::string name, int price) {
     // TODO: Problem 1.1
     if(price < 0) {
         os << "ADMIN_UI: Invalid price." << endl;
-        //cout << "ADMIN_UI: Invalid price." << endl;
     } else {
         db.add_product(name, price);
         os << "ADMIN_UI: " << name << " is added to the database." << endl;
-//        cout << "ADMIN_UI: " << name << " is added to the database." << endl;
     }
 }
 
 void AdminUI::edit_product(std::string name, int price) {
     // TODO: Problem 1.1
-    if(db.check_product(name)){
+    if(db.get_product(name)!= nullptr){
         if(price < 0) {
             os << "ADMIN_UI: Invalid price." << endl;
         } else {

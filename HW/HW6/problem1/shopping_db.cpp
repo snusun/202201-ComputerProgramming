@@ -13,15 +13,6 @@ void ShoppingDB::add_product(std::string name, int price) {
     products.push_back(p);
 }
 
-bool ShoppingDB::check_product(std::string name){
-    for(auto & product : products){
-        if(product->name == name){
-            return true;
-        }
-    }
-    return false;
-}
-
 Product* ShoppingDB::get_product(std::string name) {
     for(auto & product : products){
         if(product->name == name){

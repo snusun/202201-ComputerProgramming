@@ -15,9 +15,13 @@ public:
     void add_purchase_history(Product* product);
     bool check_password(std::string password);
     int discount(bool is_premium, int price);
+    void add_cart(Product *product);
+    std::vector<Product*> get_cart();
+    void clear_cart();
 private:
     std::string password;
     std::vector<Product*> purchase_history;
+    std::vector<Product*> cart;
 };
 
 class NormalUser : public User {

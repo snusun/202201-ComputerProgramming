@@ -21,11 +21,23 @@ bool User::check_password(std::string password) {
     } else return false;
 }
 
-int discount(bool is_premium, int price){
+int User::discount(bool is_premium, int price){
     if(is_premium){
-        int dis_price = round(DISCOUNT_RATE*price);
+        int dis_price = round((1-DISCOUNT_RATE)*price);
         return dis_price;
     } else {
         return price;
     }
+}
+
+void User::add_cart(Product *product) {
+    cart.push_back(product);
+}
+
+std::vector<Product*> User::get_cart(){
+    return cart;
+}
+
+void User::clear_cart(){
+    cart.clear();
 }
