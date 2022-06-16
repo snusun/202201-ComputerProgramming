@@ -18,6 +18,7 @@ public:
     void add_cart(Product *product);
     std::vector<Product*> get_cart();
     void clear_cart();
+    std::vector<Product*> get_purchase_history();
 private:
     std::string password;
     std::vector<Product*> purchase_history;

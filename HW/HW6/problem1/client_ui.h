@@ -4,6 +4,7 @@
 #include <string>
 #include "ui.h"
 #include "shopping_db.h"
+#include "ProductInfo.h"
 
 class ClientUI : public UI {
     public:
@@ -17,8 +18,11 @@ class ClientUI : public UI {
         void buy(std::string product_name);
         void buy_all_in_cart();
         void recommend_products();
+        //bool compare_product_info(const ProductInfo& n1, const ProductInfo& n2);
     private:
         User* current_user;
+
+    bool compare_product_info(ProductInfo &n1, ProductInfo &n2);
 };
 
 #endif //PROBLEM1_CLIENT_UI_H

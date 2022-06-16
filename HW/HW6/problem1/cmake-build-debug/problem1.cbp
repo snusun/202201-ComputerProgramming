@@ -186,6 +186,14 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/ProductInfo.cpp">
+			<Option target="problem1_main"/>
+			<Option target="problem1_test"/>
+		</Unit>
+		<Unit filename="/Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/ProductInfo.h">
+			<Option target="problem1_main"/>
+			<Option target="problem1_test"/>
+		</Unit>
 		<Unit filename="/Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/admin_ui.cpp">
 			<Option target="problem1_main"/>
 			<Option target="problem1_test"/>

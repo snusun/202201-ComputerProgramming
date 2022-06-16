@@ -4,8 +4,8 @@ project(problem1 VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_executable(problem1_main test.cpp ui.cpp admin_ui.cpp client_ui.cpp shopping_db.cpp product.cpp user.cpp)
-add_executable(problem1_test test.cpp ui.cpp admin_ui.cpp client_ui.cpp shopping_db.cpp product.cpp user.cpp)
+add_executable(problem1_main test.cpp ui.cpp admin_ui.cpp client_ui.cpp shopping_db.cpp product.cpp user.cpp ProductInfo.cpp ProductInfo.h)
+add_executable(problem1_test test.cpp ui.cpp admin_ui.cpp client_ui.cpp shopping_db.cpp product.cpp user.cpp ProductInfo.cpp ProductInfo.h)
 
 target_compile_definitions(problem1_main PRIVATE MAIN)
 target_compile_definitions(problem1_test PRIVATE TEST)

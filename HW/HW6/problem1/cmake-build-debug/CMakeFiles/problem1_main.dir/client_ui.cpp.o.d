@@ -420,4 +420,5 @@ CMakeFiles/problem1_main.dir/client_ui.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream \
   /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/shopping_db.h \
   /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/user.h \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/product.h
+  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/product.h \
+  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/ProductInfo.h

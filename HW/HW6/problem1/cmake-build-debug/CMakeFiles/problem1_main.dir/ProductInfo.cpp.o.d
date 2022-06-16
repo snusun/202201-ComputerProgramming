@@ -1,5 +1,5 @@
-CMakeFiles/problem1_main.dir/test.cpp.o: \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/test.cpp \
+CMakeFiles/problem1_main.dir/ProductInfo.cpp.o: \
+  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/ProductInfo.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__config_site \
@@ -413,18 +413,5 @@ CMakeFiles/problem1_main.dir/test.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_fsfilcnt_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/_types/_nl_item.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__bsd_locale_defaults.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/sstream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/fstream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/filesystem \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stack \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/deque \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__split_buffer \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iomanip \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/shopping_db.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/vector \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/user.h \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/product.h \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/admin_ui.h \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/ui.h \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/client_ui.h \
-  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/ProductInfo.h
+  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/ProductInfo.h \
+  /Users/home/Desktop/컴퓨터프로그래밍/git/HW/HW6/problem1/product.h

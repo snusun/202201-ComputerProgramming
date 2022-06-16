@@ -536,6 +536,33 @@ problem1_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/problem1_test.dir/build.make CMakeFiles/problem1_test.dir/build
 .PHONY : problem1_test/fast
 
+ProductInfo.o: ProductInfo.cpp.o
+.PHONY : ProductInfo.o
+
+# target to build an object file
+ProductInfo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/problem1_main.dir/build.make CMakeFiles/problem1_main.dir/ProductInfo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/problem1_test.dir/build.make CMakeFiles/problem1_test.dir/ProductInfo.cpp.o
+.PHONY : ProductInfo.cpp.o
+
+ProductInfo.i: ProductInfo.cpp.i
+.PHONY : ProductInfo.i
+
+# target to preprocess a source file
+ProductInfo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/problem1_main.dir/build.make CMakeFiles/problem1_main.dir/ProductInfo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/problem1_test.dir/build.make CMakeFiles/problem1_test.dir/ProductInfo.cpp.i
+.PHONY : ProductInfo.cpp.i
+
+ProductInfo.s: ProductInfo.cpp.s
+.PHONY : ProductInfo.s
+
+# target to generate assembly for a file
+ProductInfo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/problem1_main.dir/build.make CMakeFiles/problem1_main.dir/ProductInfo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/problem1_test.dir/build.make CMakeFiles/problem1_test.dir/ProductInfo.cpp.s
+.PHONY : ProductInfo.cpp.s
+
 admin_ui.o: admin_ui.cpp.o
 .PHONY : admin_ui.o
 
@@ -766,6 +793,9 @@ help:
 	@echo "... NightlyUpdate"
 	@echo "... problem1_main"
 	@echo "... problem1_test"
+	@echo "... ProductInfo.o"
+	@echo "... ProductInfo.i"
+	@echo "... ProductInfo.s"
 	@echo "... admin_ui.o"
 	@echo "... admin_ui.i"
 	@echo "... admin_ui.s"
