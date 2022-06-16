@@ -6,7 +6,7 @@ User::User(std::string name, std::string password): name(name), password(passwor
 
 void User::add_purchase_history(Product* product){
     // TODO: Problem 1.2
-
+    purchase_history.push_back(product);
 }
 
 bool User::check_password(std::string password) {

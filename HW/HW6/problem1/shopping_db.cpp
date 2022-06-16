@@ -33,19 +33,8 @@ bool ShoppingDB::edit_product(std::string name, int price) {
     return false;
 }
 
-void ShoppingDB::print_product(){
-    if(products.size()==0){
-        cout << "Products: []" << endl;
-        return;
-    }
-    cout << "Products: [";
-
-    for(int i=0; i<products.size()-1; i++){
-        auto product = products.at(i);
-        cout << "(" << product->name << ", " << product->price << "), ";
-    }
-
-    cout << "(" << products.at(products.size()-1)->name << ", " << products.at(products.size()-1)->price << ")]" << endl;
+std::vector<Product*> ShoppingDB::get_products(){
+    return products;
 }
 
 void ShoppingDB::add_user(std::string username, std::string password, bool premium) {

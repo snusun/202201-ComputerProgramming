@@ -14,6 +14,7 @@ public:
     bool check_password(std::string password);
 private:
     std::string password;
+    std::vector<Product*> purchase_history;
 };
 
 class NormalUser : public User {
