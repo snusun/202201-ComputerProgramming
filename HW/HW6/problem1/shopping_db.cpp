@@ -22,6 +22,15 @@ bool ShoppingDB::check_product(std::string name){
     return false;
 }
 
+Product* ShoppingDB::get_product(std::string name) {
+    for(auto & product : products){
+        if(product->name == name){
+            return product;
+        }
+    }
+    return nullptr;
+}
+
 bool ShoppingDB::edit_product(std::string name, int price) {
     // TODO: Problem 1.1
     for(auto & product : products){
@@ -39,13 +48,8 @@ std::vector<Product*> ShoppingDB::get_products(){
 
 void ShoppingDB::add_user(std::string username, std::string password, bool premium) {
     // TODO: Problem 1.2
-    if(premium){
-        PremiumUser *premiumUser = static_cast<PremiumUser *>(new User(username, password));
-        users.push_back(premiumUser);
-    } else {
-        NormalUser *normalUser = static_cast<NormalUser *>(new User(username, password));
-        users.push_back(normalUser);
-    }
+    User *user = new User(username, password, premium);
+    users.push_back(user);
 }
 
 User* ShoppingDB::check_user(std::string username, std::string password){
