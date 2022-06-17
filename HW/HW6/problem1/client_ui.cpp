@@ -140,7 +140,7 @@ void ClientUI::recommend_products() {
 
         // sort
 
-        sort(recommend_list.begin(), recommend_list.end());
+        sort(recommend_list.begin(), recommend_list.end(), greater<>());
 
         // 세개만 출력
         os << "CLIENT_UI: ";

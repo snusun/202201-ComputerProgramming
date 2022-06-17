@@ -7,9 +7,7 @@
 
 ProductInfo::ProductInfo(Product *product, int count, int idx) : product(product), count(count), idx(idx) {}
 
-bool ProductInfo::operator< (const ProductInfo& other) const {
-//    std::cout << count << " " << other.count << std::endl;
-//    std::cout << idx << " " << other.idx << std::endl;
+bool ProductInfo::operator> (const ProductInfo& other) const {
     if(count == other.count){
         return idx > other.idx;
     }

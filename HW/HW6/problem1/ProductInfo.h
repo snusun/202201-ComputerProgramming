@@ -9,11 +9,11 @@
 
 class ProductInfo {
 public:
-    ProductInfo(Product* product, int count, int start_idx);
+    ProductInfo(Product* product, int count, int idx);
     Product* product;
     int count;
     int idx;
-    bool operator< (const ProductInfo& other) const;
+    bool operator> (const ProductInfo& other) const;
 };
 
 
